@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Flask Website</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <span class="app-name">ByteBite</span>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('database') }}">Database</a>
+            <a href="{{ url_for('about') }}">About Us</a>
+            <input type="text" placeholder="Search...">
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 My Flask App, Inc.</p>
+    </footer>
+</body>
+
+</html>

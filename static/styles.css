@@ -1,0 +1,56 @@
+:root {
+    --main-color: #028940;
+    --white: #f0f0f0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    background-color: var(--main-color);
+    color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.nav-left .app-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.nav-right a {
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.nav-right input[type="text"] {
+    padding: 5px;
+    margin-right: 15px;
+}
+
+.nav-right a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    padding: 20px;
+}
+
+footer {
+    background-color: var(--main-color);
+    color: var(--white);
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
