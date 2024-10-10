@@ -16,3 +16,4 @@ Meal Builder:
 - The meal builder will also allow users to create new meals and remove ones they don’t want to have anymore. The user will be able to favorite any of the meals they have created.
 
 Below is the link for a video that walks through our high fidelity prototype of our project:
+https://drive.google.com/file/d/1N7pLtXhfSFZ_Tl6SszA3nUIfnJ8nbwJw/view?usp=sharing 
