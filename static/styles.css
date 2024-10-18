@@ -42,7 +42,7 @@ body {
 }
 
 .content {
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 footer {
@@ -53,4 +53,42 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+.about-us{
+    text-align: center;
+    color: white;
+    /* margin-top: 50px; */
+    /* margin-bottom: 100px; */
+    padding-top: 0px;
+    margin-left: 200px;
+    margin-right: 200px;
+    background-color: #323438;
+    height: 100%;
+    padding: 15px;
+    
+}
+
+.auphoto{
+    grid-area: photo;
+    height: 100%;
+    width: 200px;
+    outline: 2px solid blue;
+}
+.auinfo{
+    grid-area: info;
+    text-align: left;
+}
+
+.aboutgrid{
+    outline: 2px solid green;
+    width: 85%;
+    height: 175px;
+    margin-left: 6%;
+    margin-bottom: 3%;
+    margin-block-start: 1%;
+    display: grid;
+    grid-template-areas: 'photo info';
+    gap: 10px;
+    padding: 10px;
 }
