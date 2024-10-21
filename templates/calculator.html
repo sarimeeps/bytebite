@@ -1,5 +1,35 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-<h1>Calculator Page</h1>
+<div class = "about-us">
+    <h1>ByteBite Calculator</h1>
+    <a onclick="history.back()">
+        <button class = "backbutton" style = "float: left;">Back</button>
+    </a>
+    <div class = "calcgrid">
+        <div class = "qty">
+            <p>QTY</p>
+        </div>
+        <div class = "calcname">
+            <p>Name</p>
+        </div>
+        <div class = "calccal">
+            <p>Cal</p>
+        </div>
+        <div class = "calccarb">
+            <p>Carbs</p>
+        </div>
+        <div class = "calcfat">
+            <p>Fat</p>
+        </div>
+    </div>
+    <hr style = "width: 75%; margin-top: 0;">
+
+    
+
+    <!-- <p><a href="{{ url_for('foodsearch') }}">Add Item</a></p> -->
+
+    
+    
+</div>
 {% endblock %}

@@ -36,6 +36,10 @@ def builder():
 def food():
     return render_template('food.html')
 
+@app.route('/foodsearch')
+def foodsearch():
+    return render_template('foodsearch.html')
+
 # Big Api Call 
 @app.get('/food-list')
 def food_list():
