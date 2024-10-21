@@ -28,6 +28,10 @@ def calculator():
 def builder():
     return render_template('builder.html')
 
+@app.route('/food')
+def food():
+    return render_template('food.html')
+
 # Big Api Call 
 @app.get('/food-list')
 def food_list():
