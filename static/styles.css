@@ -111,8 +111,6 @@ footer {
     color: white;
     margin-bottom: 50px;
     padding-top: 0px;
-    margin-left: 200px;
-    margin-right: 200px;
     background-color: #323438;
     height: 100%;
     padding: 15px;
@@ -734,12 +732,14 @@ button, input[type="submit"] {
 }
 
 .qty{
-    outline: solid 2px black;
     width: 100px;
+    
     font-size: larger;
     color: black;
     text-align: center;
     padding-top: 15px;
+    background-color: #d6f6d5;
+    height: 35px;
 }
 
 .calcname{
@@ -753,29 +753,34 @@ button, input[type="submit"] {
 }
 
 .calccal{
-    outline: solid 2px black;
     width: 100px;
     font-size: larger;
     color: black;
     text-align: center;
     padding-top: 15px;
     margin-left: -50px;
+    background-color: #d6f6d5;
+    height: 35px;
 }
 
 .calccarb{
-    outline: solid 2px black;
     font-size: larger;
     color: black;
     text-align: center;
     padding-top: 15px;
+    width: 100px;
+    margin-left: -47px;
 }
 
 .calcfat{
-    outline: solid 2px black;
     font-size: larger;
     color: black;
     text-align: center;
     padding-top: 15px;
+    width: 100px;
+    margin-left: -45px;
+    background-color: #d6f6d5;
+    height: 35px;
 }
 
 .calc-add-icon{
@@ -786,7 +791,6 @@ button, input[type="submit"] {
 }
 
 .calc-remove-icon{
-    outline: solid 2px black;
     font-size: larger;
     color: black;
     text-align: center;
@@ -809,6 +813,7 @@ button, input[type="submit"] {
 
 .calc-item{
     background-color: white;
+    outline: solid 2px black;
     border-radius: 5px;
     width: 73%;
     height: 50px;
