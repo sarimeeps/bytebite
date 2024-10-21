@@ -559,3 +559,54 @@ button, input[type="submit"] {
 .calculator-box p{
     width: 65%;
 }
+
+/* Calculator */
+.backbutton{
+    background-color: #FFCA57;
+    text-align: center;
+    color: black;
+    width: 100px;
+    height: 25px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.qty{
+    color: #FFCA57;
+}
+
+.calcname{
+    color: #FFCA57;
+}
+
+.calccal{
+    color: #FFCA57;
+}
+
+.calccarb{
+    color: #FFCA57;
+}
+
+.calcfat{
+    color: #FFCA57;
+}
+
+.calcgrid{
+    border-bottom: white;
+    width: 70%;
+    height: 50px;
+    display: grid;
+    grid-template-areas: 'qty calcname calccal calccarb calcfat';
+    margin-top: 30px;
+}
+
+.searchbutton{
+    background-color: white;
+    color: black;
+    width: 100px;
+    height: 50px;
+    border-radius: 5px;
+    outline: 2px solid black;
+    margin-left: 40%;
+    margin-top: 15%
+}
