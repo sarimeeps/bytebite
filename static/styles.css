@@ -277,5 +277,42 @@ button, input[type="submit"] {
     background-color: white;
 }
 
-/* Food Item Page */
+/* Calculator */
+.backbutton{
+    background-color: #FFCA57;
+    text-align: center;
+    color: black;
+    width: 100px;
+    height: 25px;
+    border-radius: 5px;
+    font-weight: bold;
+}
 
+.qty{
+    color: #FFCA57;
+}
+
+.calcname{
+    color: #FFCA57;
+}
+
+.calccal{
+    color: #FFCA57;
+}
+
+.calccarb{
+    color: #FFCA57;
+}
+
+.calcfat{
+    color: #FFCA57;
+}
+
+.calcgrid{
+    border-bottom: white;
+    width: 70%;
+    height: 50px;
+    display: grid;
+    grid-template-areas: 'qty calcname calccal calccarb calcfat';
+    margin-top: 30px;
+}
