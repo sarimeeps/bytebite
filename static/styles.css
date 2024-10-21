@@ -24,8 +24,55 @@ body {
 }
 
 .nav-left .app-name {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 800;
+    color: rgba(255, 202, 87, 1);
+}
+
+.logo-container{
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+    height: 40px;
+}
+
+.logo-head-container{
+    width: 40px;
+    height: 40px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+}
+
+.logo-head-container img{
+    width: 100%;
+    height: 100%;
+}
+
+.nav-right{
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-right-container{
+    width: 450px;
+    height: 40px;
+    position: relative;
+    right: 0;
+    top: 10px;
+}
+
+.nav-right .txt-box{
+    margin-bottom: 10px;
+    border: 1px solid rgb(156, 156, 156);
+    border-radius: 5px;
+    width: 200px;
+    height: 15px;
+    padding: 10px;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
 }
 
 .nav-right a {
@@ -42,10 +89,6 @@ body {
 
 .nav-right a:hover {
     text-decoration: underline;
-}
-
-.content {
-    /* padding: 20px; */
 }
 
 footer {
@@ -270,7 +313,7 @@ button, input[type="submit"] {
     background-image: linear-gradient(rgba(0, 0, 0, 0), rgb(26, 27, 30));
     /* rgba(50, 52, 56, 1) */
     position: absolute;
-    top: 60px;
+    top: 70px;
     width: 100%;
     height: 400px;
 }
@@ -278,7 +321,7 @@ button, input[type="submit"] {
 .blur-container {
     content: '';
     position: absolute;
-    top: 455px;
+    top: 465px;
     width: 100%;
     height: 150px;
     background: linear-gradient(to top, rgba(28, 18, 18, 0) 0%, rgb(26, 27, 30) 100%);
@@ -294,8 +337,9 @@ button, input[type="submit"] {
     justify-content: center;
     flex-direction: column;
     position: absolute;
-    top: 40%;
+    top: 43%;
     left: 32.5%;
+    box-shadow: 0 20px 30px -2px rgb(0, 0, 0)
 }
 
 .search-box{
@@ -330,7 +374,7 @@ button, input[type="submit"] {
     position: relative;
     width: 100%;
     max-height: 100px;
-    top: 150px;
+    top: 125px;
 }
 
 .common-searches-container .cutting-board{
@@ -343,7 +387,7 @@ button, input[type="submit"] {
     position: absolute;
     font-size: 60px;
     color: white;
-    top: 1%;
+    top: -30px;
     left: 1%;
     font-weight: 300;
     font-family: fantasy;
@@ -356,7 +400,7 @@ button, input[type="submit"] {
     justify-content: center;
     width: 90%;
     height: 335px;
-    top: 150px;
+    top: 140px;
     left: 5%;
 }
 
@@ -395,18 +439,11 @@ button, input[type="submit"] {
 
 .food-cards-container .food-card .label-info ul li.food-label {
     font-weight: bold;
+    font-size: larger;
 }
 
 .food-cards-container .food-card .label-info ul li.food-brand {
     font-style: italic; 
-}
-
-.food-cards-container .food-card .label-info ul li.food-protein {
-    color: #028940; 
-}
-
-.food-cards-container .food-card .label-info ul li.food-fiber {
-    color: #ff5722; 
 }
 
 .flour-container{
