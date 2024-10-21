@@ -572,34 +572,92 @@ button, input[type="submit"] {
 }
 
 .qty{
-    color: #FFCA57;
+    outline: solid 2px black;
+    width: 100px;
+    font-size: larger;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
 }
 
 .calcname{
-    color: #FFCA57;
+
+    font-size: larger;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+    width: 200px;
+    margin-left: -50px;
 }
 
 .calccal{
-    color: #FFCA57;
+    outline: solid 2px black;
+    width: 100px;
+    font-size: larger;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+    margin-left: -50px;
 }
 
 .calccarb{
-    color: #FFCA57;
+    outline: solid 2px black;
+    font-size: larger;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
 }
 
 .calcfat{
-    color: #FFCA57;
+    outline: solid 2px black;
+    font-size: larger;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.calc-add-icon{
+    font-size: larger;
+    color: black;
+    text-align: center;
+    padding-top: 3px;
+}
+
+.calc-remove-icon{
+    outline: solid 2px black;
+    font-size: larger;
+    color: black;
+    text-align: center;
+    padding-top: 5px;
 }
 
 .calcgrid{
-    border-bottom: white;
     width: 70%;
     height: 50px;
     display: grid;
-    grid-template-areas: 'qty calcname calccal calccarb calcfat';
+    grid-template-columns: auto auto auto auto auto;
     margin-top: 30px;
 }
 
+.calcgridform{
+    text-align: center;
+    padding-top: 10%;
+    color:#FFCA57;
+}
+
+.calc-item{
+    background-color: white;
+    border-radius: 5px;
+    width: 73%;
+    height: 50px;
+    margin-left: 150px;
+    margin-top: 15px;
+    display: grid;
+    grid-template-areas: 'qty calcname calccal calccarb calcfat calc-add-icon calc-remove-icon';
+    grid-column-gap: 0px;
+}
+
+/* Search */
 .searchbutton{
     background-color: white;
     color: black;
