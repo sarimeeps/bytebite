@@ -20,6 +20,10 @@ def about():
 def login():
     return render_template('login.html')
 
+@app.get('/register')
+def register():
+    return render_template('register.html')
+
 @app.route('/calculator')
 def calculator():
     return render_template('calculator.html')
@@ -27,6 +31,10 @@ def calculator():
 @app.route('/builder')
 def builder():
     return render_template('builder.html')
+
+@app.route('/food')
+def food():
+    return render_template('food.html')
 
 # Big Api Call 
 @app.get('/food-list')
