@@ -599,3 +599,14 @@ button, input[type="submit"] {
     grid-template-areas: 'qty calcname calccal calccarb calcfat';
     margin-top: 30px;
 }
+
+.searchbutton{
+    background-color: white;
+    color: black;
+    width: 100px;
+    height: 50px;
+    border-radius: 5px;
+    outline: 2px solid black;
+    margin-left: 40%;
+    margin-top: 15%
+}
