@@ -8,7 +8,7 @@ body {
     font-weight: 400;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: rgba(50, 52, 56, 1);
 }
 
 .navbar {
@@ -49,7 +49,7 @@ footer {
     background-color: var(--main-color);
     color: var(--white);
     text-align: center;
-    padding: 10px 0;
+    padding: 1px 0;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -58,8 +58,7 @@ footer {
 .about-us{
     text-align: center;
     color: white;
-    /* margin-top: 50px; */
-    /* margin-bottom: 100px; */
+    margin-bottom: 50px;
     padding-top: 0px;
     margin-left: 200px;
     margin-right: 200px;
@@ -73,7 +72,6 @@ footer {
     grid-area: photo;
     height: 100%;
     width: 200px;
-    outline: 2px solid blue;
 }
 .auinfo{
     grid-area: info;
@@ -83,7 +81,7 @@ footer {
 .aboutgrid{
     outline: 2px solid green;
     width: 85%;
-    height: 175px;
+    height: 200px;
     margin-left: 6%;
     margin-bottom: 3%;
     margin-block-start: 1%;
@@ -91,4 +89,189 @@ footer {
     grid-template-areas: 'photo info';
     gap: 10px;
     padding: 10px;
+}
+
+
+/* LOGIN CSS */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    margin: 0 auto;
+}
+
+.img-container-1,
+.img-container-2 {
+    width: 100%;
+    height: 100%;
+}
+
+.img-container-1 img,
+.img-container-2 img {
+    width: 100%;
+    height: 100%;
+    min-height: 772px;
+    filter: blur(1.5px);
+    clip-path: inset(0 1px);
+}
+
+.img-container-1 img {
+    transform: rotate(180deg);
+}
+
+.form-container {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    min-height: 773px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button, input[type="submit"] {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.form-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-btn {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    padding: 20px;
+    width: 220px;
+    background-color: rgba(230, 230, 230, 1);
+    font-weight: 600;
+    font-size: larger;
+}
+
+.active-tab {
+    color: white;
+    background: #028940;
+    font-weight: bold;
+    box-shadow: 0 4px 2px -2px gray;
+}
+
+.logo-signin img {
+    height: 150px;
+    margin-top: 30px;
+    margin-left: 160px;
+}
+
+.form-grid {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+}
+
+.form-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.form-box {
+    margin-top: 20px;
+}
+
+.txt-box {
+    margin-bottom: 10px;
+    border: 1px solid rgb(156, 156, 156);
+    border-radius: 5px;
+    width: 400px;
+    height: 15px;
+    padding: 10px;
+}
+
+.register-submit{
+    background-color: black;
+    color: white;
+    font: bold 15px arial, sans-serif;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 4px;
+    width: 280px;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.separator-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.separator-txt {
+    padding: 0 10px;
+    color: #999;
+    font-weight: 300;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.google-container {
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.google-btn {
+    transition: background-color .3s, box-shadow .3s;
+    width: 65%;
+    padding: 10px 16px 10px 42px;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+    color: #757575;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+    background-color: rgb(238, 238, 238);
+    background-repeat: no-repeat;
+    background-position: 220px 11px;
+    margin-bottom: 15px;
+}
+
+.google-btn:hover {
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25);
+}
+
+.google-btn:active {
+    background-color: #eeeeee;
+}
+
+.submit-btn {
+    background-color: white;
 }

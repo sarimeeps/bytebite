@@ -1,6 +1,57 @@
-{% extends "_layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="login-container">
+        <div class="img-container-1">
+            <img src="../static/images/food-background.jpg" alt="">
+        </div>
+        <div class="form-container">
+            <div class="header">
+                <div class="header-btn active-tab" id="register-tab" onclick="toggleTab(0)">
+                    <button>Sign In</button>
+                </div>
+                <div class="header-btn" id="signin-tab" onclick="toggleTab(1)">
+                    <button>Register</button>
+                </div>                
+            </div>
+            <div class="form-grid">
+                <div class="logo-signin">
+                    <img src="../static/images/logo.jpg" alt="logo">
+                </div>
+                <form action="#" class="form-box active">
+                    <input type="text" class="txt-box" id="email" name="email" placeholder="Email" required>
+                    <input type="text" class="txt-box" id="username" name="username" placeholder="Username" required>
+                    <input type="text" class="txt-box" id="password" name="password" placeholder="Password" required>
+                    <input type="text" class="txt-box" id="c-password" name="c-password" placeholder="Confirm Password" required>
+                    <div class="register-submit-container">
+                        <button type="submit" class="register-submit">Register</button>
+                    </div>
+                </form>
+                    <div class="separator">
+                        <div class="separator-line"></div>
+                        <div class="separator-txt">or</div>
+                        <div class="separator-line"></div>
+                    </div>
+                    <div class="google-container">
+                        <button class="google-btn">Sign in with Google</button>
+                    </div>
+            </div>
+        </div>
+        <div class="img-container-2">
+            <img src="../static/images/food-background.jpg" alt="">
+        </div>
+    </div>
 
-{% block content %}
-    <h1>Login Page</h1>
-    <p>Please log in</p>
-{% endblock %}
+    <script>
+        
+    </script>
+
+</body>
+</html>
