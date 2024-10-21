@@ -1,6 +1,53 @@
 {% extends "_layout.html" %}
 
-{% block content %}
-    <h1>About Us</h1>
-    <p>ByteBite was established in 2024.</p>
+{% block content %}    
+    
+    <div class = "about-us">
+        <h1 style = 'font-weight: normal;'><u>About Us</u></h1>  
+        <h2 style = "color: #FFCA57;text-align: left;" >Our Mission</h2>
+        <p style = "text-align: left;">ByteBite is an application that aims to make it quick and easy to find nutritional information about different foods. We’ve noticed that most other applications don’t provide all the necessary information for people that have food restrictions or are doing specific diets, so we want to make a website that has all the information in the same place.</p>
+        <h2 style = "color: #FFCA57;text-align: left;">Our Team</h2>
+        
+        <div class = "aboutgrid">
+            <div class = "auphoto">
+                <img src="../static/images/SarahA.jpg" alt="" style="width:100%;">
+            </div>
+            <div class = "auinfo">
+                <h3 style = "font-weight: normal;">Sarah Argueta: Designer/Developer</h3>
+                <p style = "color:#FFCA57">Github: https://github.com/sarimeeps</p>
+                <p>
+                    With an interest for design and front-end development, Sarah’s dual role involves crafting visually appealing interfaces and ensuring seamless user experience. 
+                    </p>
+            </div>
+        </div>
+        <div class = "aboutgrid">
+            <div class = "auphoto"></div>
+            <div class = "auinfo">
+                <h3 style = "font-weight: normal;">Carson Bavery: Developer</h3>
+                <p style = "color: #FFCA57;">Github: https://github.com/CarsonBavery</p>
+                <p>With an interest for software development, Carson’s role involves creating a robust and scalable back-end system to ensure seamless user experience</p>
+            </div>
+        </div>
+        <div class = "aboutgrid">
+            <div class = "auphoto">
+                <img src="../static/images/muhammadpfp.jpg" alt="" style="width:100%;">
+            </div>
+            <div class = "auinfo">
+                <h3 style = "font-weight: normal;">Muhammad Waheed: Tester/Developer</h3>
+                <p style = "color: #FFCA57;">Github: https://github.com/MSaadWaheed</p>
+                <p>With an interest in software development, Muhammad’s role involves ensuring a seamless user experience through thorough unit testing of the back-end system.</p>
+            </div>
+        </div>
+        <div class = "aboutgrid">
+            <div class = "auphoto">
+                <img src="../static/images/Sydney_pfp.JPG" alt="Sarah" style="width:100%;">
+            </div>
+            <div class = "auinfo">
+                <h3 style = "font-weight: normal;">Sydney Carter: Project Manager</h3>
+                <p style = "color: #FFCA57;">Github: https://github.com/sydcar</p>
+                <p>With an interest in management, Sydney’s role involves overseeing the creation of ByteBite. Sydney’s role involves coordinating between team members, managing timelines, and ensure project goals are met.</p>
+            </div>
+        </div>
+        
+    </div>
 {% endblock %}
