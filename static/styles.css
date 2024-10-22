@@ -119,6 +119,13 @@ footer {
     
 }
 
+/* Builder */
+.builder{
+    color: white;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
 .auphoto{
     grid-area: photo;
     height: 100%;
