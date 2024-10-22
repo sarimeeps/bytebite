@@ -729,12 +729,12 @@ button, input[type="submit"] {
     height: 25px;
     border-radius: 5px;
     font-weight: bold;
+    margin-left: 25px;
 }
 
 .qty{
     width: 100px;
-    
-    font-size: larger;
+    font-size: large;
     color: black;
     text-align: center;
     padding-top: 15px;
@@ -743,18 +743,17 @@ button, input[type="submit"] {
 }
 
 .calcname{
-
-    font-size: larger;
+    font-size: large;
     color: black;
     text-align: center;
     padding-top: 15px;
-    width: 200px;
+    width: 225px;
     margin-left: -50px;
 }
 
 .calccal{
     width: 100px;
-    font-size: larger;
+    font-size: large;
     color: black;
     text-align: center;
     padding-top: 15px;
@@ -764,16 +763,16 @@ button, input[type="submit"] {
 }
 
 .calccarb{
-    font-size: larger;
+    font-size: large;
     color: black;
     text-align: center;
     padding-top: 15px;
-    width: 100px;
+    width: 125px;
     margin-left: -47px;
 }
 
 .calcfat{
-    font-size: larger;
+    font-size: large;
     color: black;
     text-align: center;
     padding-top: 15px;
@@ -784,14 +783,14 @@ button, input[type="submit"] {
 }
 
 .calc-add-icon{
-    font-size: larger;
+    font-size: large;
     color: black;
     text-align: center;
     padding-top: 3px;
 }
 
 .calc-remove-icon{
-    font-size: larger;
+    font-size: large;
     color: black;
     text-align: center;
     padding-top: 5px;
@@ -802,7 +801,8 @@ button, input[type="submit"] {
     height: 50px;
     display: grid;
     grid-template-columns: auto auto auto auto auto;
-    margin-top: 30px;
+    margin-left: 100px;
+    align-items: baseline;
 }
 
 .calcgridform{
@@ -817,11 +817,75 @@ button, input[type="submit"] {
     border-radius: 5px;
     width: 73%;
     height: 50px;
-    margin-left: 150px;
-    margin-top: 15px;
+    margin-left: 125px;
+    margin-top: 25px;
     display: grid;
     grid-template-areas: 'qty calcname calccal calccarb calcfat calc-add-icon calc-remove-icon';
     grid-column-gap: 0px;
+}
+
+.add-item-button{
+    outline: solid 3px white;
+    width: 73%;
+    height: 50px;
+    border-radius: 5px;
+    margin-top: 25px;
+    margin-left: -5px
+}
+
+.total-box{
+    width: 22%;
+    height: 50px;
+    border-radius: 5px;
+    outline: solid 2px black;
+    background-color: white;
+    display: grid;
+    grid-template-areas: 'calccal-total calccarb-total calcfat-total';
+    position: absolute;
+    left: 40%;
+}
+
+.calccal-total{
+    width: 100px;
+    font-size: large;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+    background-color: #d6f6d5;
+    height: 35px;
+    border-radius: 5px;
+}
+
+.calccarb-total{
+    font-size: large;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+    width: 125px;
+}
+
+.calcfat-total{
+    font-size: large;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+    width: 100px;
+    background-color: #d6f6d5;
+    height: 35px;
+    border-radius: 5px;
+}
+
+.total-container{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-left: -600px;
+    margin-top: 25px;
+}
+
+.total-container strong{
+    flex-grow: 1;
+    font-size: x-large;
 }
 
 /* Search */

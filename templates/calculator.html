@@ -7,32 +7,49 @@
     </div>
     <div class = "about-us" style = "width: 90%;">
         <a onclick="history.back()">
-            <button class = "backbutton" style = "float: left;">Back</button>
+            <button class = "backbutton" style = "float: left; margin-right: -125px;">Back</button>
         </a>
-        <h1>ByteBite Calculator</h1>
+        <h1 class = "h1edited">ByteBite Calculator</h1>
         
         <div class = "calcgrid">
-            <div class = "calcgridform" style = "margin-left: 25px;">QTY</div>
-            <div class = "calcgridform" style = "margin-left: -25px;">Name</div>
-            <div class = "calcgridform" style = "margin-left: -25px;">Calories</div>
-            <div class = "calcgridform" style = "margin-left: -50px;">Carbs</div>
-            <div class = "calcgridform">Fat</div>
+            <div class = "calcgridform">QTY</div>
+            <div class = "calcgridform" style = "margin-left: -20px;">Name</div>
+            <div class = "calcgridform" style = "margin-left: -35px;">Calories</div>
+            <div class = "calcgridform" style = "margin-left: -115px;">Carbs</div>
+            <div class = "calcgridform" style = "margin-left: -175px;">Fat</div>
         </div>
         <hr style = "width: 75%; margin-top: 0;">
         <div class = "calc-item">
-            <div class = "qty">1</div>
-            <div class = "calcname">Brand Name</div>
-            <div class = "calccal">200</div>
-            <div class = "calccarb">54</div>
-            <div class = "calcfat">100</div>
+            <div class = "qty">2</div>
+            <div class = "calcname">Apple</div>
+            <div class = "calccal">160</div>
+            <div class = "calccarb">44 G</div>
+            <div class = "calcfat">0 G</div>
             <div class = calc-add-icon><img src="../static/images/bluepencil.jpg" alt="""></div>
             <div class = "calc-remove-icon"><img src="../static/images/trashcan.jpg" alt="""></div>
         </div>
-        
-
-        <!-- <p><a href="{{ url_for('foodsearch') }}">Add Item</a></p> -->
-
-        
+        <div class = "calc-item">
+            <div class = "qty">1</div>
+            <div class = "calcname">Avocado</div>
+            <div class = "calccal">58</div>
+            <div class = "calccarb">3 G</div>
+            <div class = "calcfat">5 G</div>
+            <div class = calc-add-icon><img src="../static/images/bluepencil.jpg" alt="""></div>
+            <div class = "calc-remove-icon"><img src="../static/images/trashcan.jpg" alt="""></div>
+        </div>
+        <a href="{{ url_for('foodsearch') }}">
+            <button class = "add-item-button">Add Item +</button>
+        </a>
+        <hr style = "width: 75%; margin-top: 100px;">
+        <div class = "total-container">
+            <strong>Total:</strong>
+            <div class = "total-box">
+                <div class = "calccal-total">218 Cal</div>
+                <div class = "calccarb-total">47 Carbs</div>
+                <div class = "calcfat-total">5g Fat</div>
+            </div>
+        </div>
+        <!-- <h2 style = "text-align: left; margin-left: 125px;">Total:</h2> -->
         
     </div>
     <div class="right-img-container" style = "width: 25%;">
