@@ -14,11 +14,11 @@
         </div>
         <div class="form-container">
             <div class="header">
-                <div class="header-btn active-tab" id="register-tab">
-                    <button>Sign In</button>
+                <div class="header-btn" id="register-tab">
+                    <button><a href="{{ url_for('login') }}">Sign In</a></button>
                 </div>
-                <div class="header-btn" id="signin-tab">
-                    <button><a href="{{ url_for('register') }}">Register</a></button>
+                <div class="header-btn active-tab" id="signin-tab">
+                    <button>Register</button>
                 </div>                
             </div>
             <div class="form-grid">
@@ -26,10 +26,12 @@
                     <img src="../static/images/logo.jpg" alt="logo">
                 </div>
                 <form action="#" class="form-box active">
+                    <input type="text" class="txt-box" id="email" name="email" placeholder="Email" required>
                     <input type="text" class="txt-box" id="username" name="username" placeholder="Username" required>
                     <input type="text" class="txt-box" id="password" name="password" placeholder="Password" required>
+                    <input type="text" class="txt-box" id="c-password" name="c-password" placeholder="Confirm Password" required>
                     <div class="register-submit-container">
-                        <button type="submit" class="register-submit">Sign In</button>
+                        <button type="submit" class="register-submit">Register</button>
                     </div>
                 </form>
                     <div class="separator">

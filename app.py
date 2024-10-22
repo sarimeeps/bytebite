@@ -25,6 +25,10 @@ def about():
 def login():
     return render_template('login.html')
 
+@app.get('/register')
+def register():
+    return render_template('register.html')
+
 @app.route('/calculator')
 def calculator():
     return render_template('calculator.html')
@@ -56,6 +60,13 @@ def delete_meal(meal_id):
     delete_meal(meal_id)
     return redirect('/builder')
 
+@app.route('/food')
+def food():
+    return render_template('food.html')
+
+@app.route('/foodsearch')
+def foodsearch():
+    return render_template('foodsearch.html')
 
 # Big Api Call 
 @app.get('/food-list')

@@ -1,0 +1,60 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+
+<div class="view-food-container">
+    <div class="left-img-container">
+        <img src="/static/images/food-background.jpg" alt="food-background">
+    </div>
+    <div class="food-content-container">
+        <div class="back-btn">
+            <a onclick="history.back()">
+                <button class="backbutton">Back</button>
+            </a>
+        </div>
+        <div class="food-display">
+            <div class="cutting-board">
+                <img class="cutting-board"src="/static/images/cutting-board.jpg" alt="cutting-board">
+            </div>
+            <div class="food-img">
+                <img src="/static/images/temp-pic.jpg" alt="food-pic">
+            </div>
+        </div>
+        <div class="food-info">
+            <div class="food-title">
+                <p class="food-title">Peanuts</p>
+            </div>
+            <div class="food-brand">
+                <p>Brand: Kroger</p>
+            </div>
+            <div class="nutrition-facts">
+                <ul>
+                    <li class="facts-title">Nutritional Facts</li>
+                    <li>Serving Size: ##</li>
+                    <li>Servings Per Container: ##</li>
+                    <li>Amount Per Serving: ##</li>
+                    <li>Calories: ##</li>
+                    <li>Calories From Fat: ##</li>
+                </ul>
+            </div>
+            <div class="daily-value">
+                <ul>
+                    <li class="facts-title">% Daily Value*</li>
+                    <li>Total Fat: ##</li>
+                    <li>Saturated Fat: ##</li>
+                    <li>Trans Fat: ##</li>
+                    <li>Cholesterol: ##</li>
+                    <li>Total Carbohydrate: ##</li>
+                    <li>Dietary Fiber: ##</li>
+                    <li>Sugars: ##</li>
+                    <li>Protein: ##</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="right-img-container">
+        <img src="/static/images/food-background.jpg" alt="food-background">
+    </div>
+</div>
+
+{% endblock %}
