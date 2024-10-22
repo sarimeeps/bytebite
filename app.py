@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, session
 from dotenv import load_dotenv
 import os
 import requests
@@ -30,6 +30,10 @@ def calculator():
 
 @app.route('/builder')
 def builder():
+    user_id = session.get('user')
+
+    
+
     return render_template('builder.html')
 
 @app.route('/food')
