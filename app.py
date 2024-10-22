@@ -71,9 +71,7 @@ def foodsearch():
 @app.route('/profile')
 def profile():
     # user = 
-
     profile_picture = 'static/images/default-profile-pic.jpg'
-
     # meals = get_user_meals(user_id)
     # return meals=meals when repo is done
     return render_template('profile.html', profile_picture=profile_picture)
