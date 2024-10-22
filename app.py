@@ -39,14 +39,7 @@ def create_meal():
     name = request.form['name']
     ingredients = request.form['ingredients']
     # CHANGE
-    with psycopg.connect(
-        conninfo=f'postgresql://postgres:{DB_PASS}@localhost:5432/Bytebite'
-    ) as conn:
-        with conn.cursor() as cur:
-            cur.execute(
-            'INSERT INTO meals (name, ingredients, favorite) VALUES (%s, %s, %s)',
-            (name, ingredients, False)
-            )
+    create_meal(name, ingredients)
     return redirect('/builder')
 
 @app.post('/meal/<int:meal_id>/edit')
@@ -54,25 +47,13 @@ def edit_meal(meal_id):
     name = request.form['name']
     ingredients = request.form['ingredients']
     # CHANGE
-    with psycopg.connect(
-        conninfo=f'postgresql://postgres:{DB_PASS}@localhost:5432/Bytebite'
-    ) as conn:
-        with conn.cursor() as cur:
-            cur.execute(
-                'UPDATE meals SET name = %s, ingredients = %s WHERE id = %s',
-                (name, ingredients, meal_id)
-            )
+    edit_meal(meal_id, name, ingredients)
     return redirect('/builder')
 
 @app.post('/meal/<int:meal_id>/delete')
 def delete_meal(meal_id):
 # CHANGE
-    with psycopg.connect(
-        conninfo=f'postgresql://postgres:{DB_PASS}@localhost:5432/Bytebite'
-    ) as conn:
-        with conn.cursor() as cur:
-            cur.execute('DELETE FROM meals WHERE id = %s', (meal_id,)
-                        )
+    delete_meal(meal_id)
     return redirect('/builder')
 
 
