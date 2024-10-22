@@ -5,6 +5,14 @@ username VARCHAR(255) NOT NULL UNIQUE,
 password VARCHAR(255)
 );
 
+-- CREATE TABLE IF NOT EXISTS food (
+
+-- );
+
+-- CREATE TABLE IF NOT EXISTS meal (
+
+-- );
+
 
 -- Test Data Only, Do Not Add to Your Real Database
 
