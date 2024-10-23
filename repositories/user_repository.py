@@ -58,8 +58,7 @@ def get_user_by_email(email: str) -> dict[str, Any] | None:
                         SELECT
                             user_id,
                             username,
-                            password,
-                            user_role
+                            password
                         FROM
                             users
                         WHERE email = %s
@@ -73,8 +72,7 @@ def get_user_id_by_email(email: str) -> dict[str, Any] | None:
         with conn.cursor(row_factory=dict_row) as cur:
             cur.execute('''
                         SELECT
-                            user_id,
-                            user_role
+                            user_id
                         FROM
                             users
                         WHERE 
@@ -91,7 +89,6 @@ def get_user_by_username(username: str) -> dict[str, Any] | None:
                         SELECT
                             user_id,
                             username,
-                            user_role,
                             password
                         FROM
                             users

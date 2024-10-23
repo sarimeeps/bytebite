@@ -1,14 +1,15 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
-from dotenv import load_dotenv
 import os
 import requests
 import psycopg
 from repositories import user_repository, meal_repository
-
+from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
+
+app.secret_key = 'secret-key'
 
 # Page Routes
 @app.get('/')
