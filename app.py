@@ -1,39 +1,60 @@
-from flask import Flask, render_template, jsonify, request, redirect
+from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from dotenv import load_dotenv
 import os
 import requests
 import psycopg
+from repositories import user_repository, meal_repository
 
-# please make a python file name db_secrets.py 
-# and save database password as DB_PASS
-from db_secrets import DB_PASS
 
 load_dotenv()
 
 app = Flask(__name__)
 
 # Page Routes
-@app.route('/')
+@app.get('/')
 def index():
     return render_template('index.html')
 
-@app.route('/about')
-def about():
+@app.get('/about')
+def about_page():
     return render_template('about.html')
 
-@app.route('/login')
-def login():
+@app.get('/login')
+def login_page():
     return render_template('login.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not username or not password:
+        error = "Please enter a valid username and password."
+        return render_template('login.html', error=error)
+    
+    user = user_repository.get_user_by_username(username)
+
+    if user is None:
+        error = "User does not exist."
+        return render_template('login.html', error=error)
+
+    if user['password'] != password:
+        error = "Incorrect password, try again!"
+        return render_template('login.html', error=error)
+
+    session['user'] = user['username']
+    return redirect(url_for('index'))
+
 
 @app.get('/register')
 def register():
     return render_template('register.html')
 
-@app.route('/calculator')
+@app.get('/calculator')
 def calculator():
     return render_template('calculator.html')
 
-@app.route('/builder')
+@app.get('/builder')
 def builder():
     return render_template('builder.html')
 
@@ -60,11 +81,11 @@ def delete_meal(meal_id):
     delete_meal(meal_id)
     return redirect('/builder')
 
-@app.route('/food')
+@app.get('/food')
 def food():
     return render_template('food.html')
 
-@app.route('/foodsearch')
+@app.get('/foodsearch')
 def foodsearch():
     return render_template('foodsearch.html')
 

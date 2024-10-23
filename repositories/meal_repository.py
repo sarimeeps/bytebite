@@ -1,7 +1,7 @@
 from typing import Any
 from repositories.db import get_pool
 from psycopg.rows import dict_row
-from db_secrets import DB_PASS
+#from db_secrets import DB_PASS
 import psycopg
 
 def create_meal(name, ingredients):
