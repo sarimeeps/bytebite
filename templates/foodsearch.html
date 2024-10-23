@@ -1,5 +1,89 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-<h1>Search Page</h1>
+
+<div class= "view-food-container">
+    <div class="left-img-container" style = "width: 25%;">
+        <img src="/static/images/food-background.jpg" alt="food-background">
+    </div>
+    <div class = "about-us" style = "width: 90%;">
+        <a onclick="history.back()">
+            <button class = "backbutton" style = "float: left;">Back</button>
+        </a>
+        <div class = "search-box2">Yogurt</div>
+
+        <table id="search-titles">
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Food Category</th>
+                <th>Brand</th>
+            </tr>
+            <tr>
+                <td>1321038</td>
+                <td>Yogurt</td>
+                <td>Yogurt</td>
+                <td>Chobani</td>
+              </tr>
+              <tr>
+                <td>1239149</td>
+                <td>Yogurt Pretzel</td>
+                <td>Yogurt,Peanuts,Seeds</td>
+                <td>Wholefood Market</td>
+              </tr>
+              <tr>
+                <td>3124459</td>
+                <td>Yogurt Raisins</td>
+                <td>Yogurt,Peanuts,Seeds</td>
+                <td>First Street</td>
+              </tr>
+              <tr>
+                <td>3457395</td>
+                <td>Yogurt</td>
+                <td>Yogurt</td>
+                <td>Activia</td>
+              </tr>
+              <tr>
+                <td>1321039</td>
+                <td>Yogurt Flavored Almonds</td>
+                <td>Yogurt,Peanuts,Seeds</td>
+                <td>Activia</td>
+              </tr>
+              <tr>
+                <td>1237462</td>
+                <td>Greek Yogurt</td>
+                <td>Yogurt</td>
+                <td>Yoplait</td>
+              </tr>
+              <tr>
+                <td>1273827</td>
+                <td>Greek Yogurt</td>
+                <td>Yogurt</td>
+                <td>Chobani</td>
+              </tr>
+              <tr>
+                <td>2373952</td>
+                <td>Yogurt</td>
+                <td>Yogurt</td>
+                <td>Publix</td>
+              </tr>
+              <tr>
+                <td>1285483</td>
+                <td>Gogurt</td>
+                <td>Yogurt</td>
+                <td>Yoplait</td>
+              </tr>
+              <tr>
+                <td>1726399</td>
+                <td>Yogurt</td>
+                <td>Yogurt</td>
+                <td>Activia</td>
+              </tr>
+        </table>
+
+    </div>
+    <div class="right-img-container" style = "width: 25%;">
+        <img src="/static/images/food-background.jpg" alt="food-background">
+    </div>
+</div>
 {% endblock %}
