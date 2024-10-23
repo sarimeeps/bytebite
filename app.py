@@ -9,7 +9,11 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = 'secret-key'
+appConfig = {
+    "FLASK SECRET": os.getenv('SECRET_KEY')
+}
+
+app.secret_key = appConfig["FLASK SECRET"]
 
 # Page Routes
 @app.get('/')
@@ -31,17 +35,17 @@ def login():
 
     if not username or not password:
         error = "Please enter a valid username and password."
-        return render_template('login.html', error=error)
+        return render_template('login.html', error=error, username=username)
     
     user = user_repository.get_user_by_username(username)
 
     if user is None:
         error = "User does not exist."
-        return render_template('login.html', error=error)
+        return render_template('login.html', error=error, username=username)
 
     if user['password'] != password:
         error = "Incorrect password, try again!"
-        return render_template('login.html', error=error)
+        return render_template('login.html', error=error, username=username)
 
     session['user'] = user['username']
     return redirect(url_for('index'))
