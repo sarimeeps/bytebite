@@ -2,25 +2,27 @@
 
 {% block content %}
 <div class="builder">
-<h1 style="text-align: center;">Meal Builder</h1>
-        <div class="back-button">
+    <div class="back-button" style="float: left; margin-top: 15px;">
         <button type="button" onclick="window.history.back();">←Back</button>
         </div>
-        <p style="margin-left: 200px;
-        margin-right: 200px;">Meal Name:</p>
-
-    <form action="/action_page.php">
-        <label for="meal_name">Meal Name:</label>
-        <input type="text" id="meal_name" name="meal_name"><br><br>
-        <input type="submit" value="Submit">
+<h1 style="text-align: center;font-weight: normal;">Meal Builder</h1>
+    <form action="/builder" style="text-align: center;">
+        <div class="meal_name">
+        <label for="meal_name" style="color: #FFCA57;">Meal Name</label><br>
+        </div>
+        <div class="meal_name">
+        <input type="text" id="meal_name" name="meal_name" placeholder="Name..." style="width: 500px; padding: 5px;"><br><br>
+        </div>
+        <div class="add-item">
+        <input type="submit" value="Add Item +">
+        </div>
     </form>
-
-        <div class="add-ingredient" style="text-align: center;">
-            <button type="Button">Add Item +</button>
-        </div>
-        <div class="create-meal" style="text-align: right;">
-            <button type="submit">Create Meal</button>
-        </div>
-    <h2>Items in meal:</h2>
+    <hr style="height: 2px;background-color: white;">
+    <div class="create-meal" style="float: right;">
+        <form action="/builder">
+            <input type="submit" value="Create Meal">
+        </form>
+    </div>
+    <h2 style="text-align: left; font-weight: normal;">Items in meal:</h2>
 </div>
 {% endblock %}
