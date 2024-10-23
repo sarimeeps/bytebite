@@ -6,7 +6,7 @@ import psycopg
 
 # please make a python file name db_secrets.py 
 # and save database password as DB_PASS
-from db_secrets import DB_PASS
+
 
 load_dotenv()
 
@@ -23,6 +23,7 @@ def about():
 
 @app.route('/login')
 def login():
+    
     return render_template('login.html')
 
 @app.get('/register')

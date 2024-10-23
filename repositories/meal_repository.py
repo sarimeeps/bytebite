@@ -1,14 +1,13 @@
 from typing import Any
-from repositories.db import get_pool
+from repositories.db import get_pool, get_database_url
 from psycopg.rows import dict_row
-from db_secrets import DB_PASS
 import psycopg
 
 def create_meal(name, ingredients):
     # CHANGE
     with psycopg.connect(
-        conninfo=f'postgresql://postgres:{DB_PASS}@localhost:5432/Bytebite'
-    ) as conn:
+        conninfo=get_database_url()
+        ) as conn:
         with conn.cursor() as cur:
             cur.execute(
             'INSERT INTO meals (name, ingredients, favorite) VALUES (%s, %s, %s)',
@@ -18,7 +17,7 @@ def create_meal(name, ingredients):
 def edit_meal(meal_id, name, ingredients):
     # CHANGE
     with psycopg.connect(
-        conninfo=f'postgresql://postgres:{DB_PASS}@localhost:5432/Bytebite'
+        conninfo=get_database_url()
     ) as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -29,7 +28,7 @@ def edit_meal(meal_id, name, ingredients):
 def delete_meal(meal_id):
 # CHANGE
     with psycopg.connect(
-        conninfo=f'postgresql://postgres:{DB_PASS}@localhost:5432/Bytebite'
+        conninfo=get_database_url()
     ) as conn:
         with conn.cursor() as cur:
             cur.execute('DELETE FROM meals WHERE id = %s', (meal_id,)
