@@ -899,3 +899,39 @@ button, input[type="submit"] {
     margin-left: 40%;
     margin-top: 15%
 }
+
+.search-box2{
+    width: 73%;
+    background-color: white;
+    border-radius: 5px;
+    height: 30px;
+    margin-top: 7%;
+    margin-left: 13%;
+    color: black;
+    text-align: left;
+    padding-top: 10px;
+    padding-left: 15px;
+}
+
+#search-titles{
+    color: white;
+    width: 90%;
+    margin-left: 45px;
+    margin-top: 2%;
+
+}
+
+#search-titles td, #search-titles th{
+    padding: 8px;
+    text-align: left;
+}
+
+#search-titles tr:nth-child(even){background-color: #6b737b;}
+
+#search-titles th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    color: white;
+    font-weight: normal;
+}
