@@ -55,6 +55,10 @@ def calculator():
 
 @app.get('/builder')
 def builder():
+    user_id = session.get('user')
+
+    
+
     return render_template('builder.html')
 
 @app.post('/meal')

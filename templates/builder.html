@@ -1,5 +1,28 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-<h1>Builder Page</h1>
+<div class="builder">
+    <div class="back-button" style="float: left; margin-top: 15px;">
+        <button type="button" onclick="window.history.back();">←Back</button>
+        </div>
+<h1 style="text-align: center;font-weight: normal;">Meal Builder</h1>
+    <form action="/builder" style="text-align: center;">
+        <div class="meal_name">
+        <label for="meal_name" style="color: #FFCA57;">Meal Name</label><br>
+        </div>
+        <div class="meal_name">
+        <input type="text" id="meal_name" name="meal_name" placeholder="Name..." style="width: 500px; padding: 5px;"><br><br>
+        </div>
+        <div class="add-item">
+        <input type="submit" value="Add Item +">
+        </div>
+    </form>
+    <hr style="height: 2px;background-color: white;">
+    <div class="create-meal" style="float: right;">
+        <form action="/builder">
+            <input type="submit" value="Create Meal">
+        </form>
+    </div>
+    <h2 style="text-align: left; font-weight: normal;">Items in meal:</h2>
+</div>
 {% endblock %}
