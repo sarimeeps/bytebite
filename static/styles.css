@@ -141,6 +141,44 @@ footer {
     border-radius: 50%;
     object-fit: cover;
 }
+
+/* Builder */
+.builder{
+    color: white;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+.create-meal{
+    text-align: right;
+    font-weight: bold;
+    color: black;
+    background-color: #FFCA57;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 10px;
+}
+.add-item{
+    margin-top: 300px;
+    margin-bottom: 20px;
+    border: 3px solid white;
+    cursor: pointer; 
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+.back-button{
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+    background-color: #FFCA57;
+    width: fit-content;
+    border-radius: 5px;
+    padding: 5px;
+}
+
 .auphoto{
     grid-area: photo;
     height: 100%;
