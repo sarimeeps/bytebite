@@ -1,9 +1,15 @@
 {% extends "_layout.html" %}
 
-{% block content %}    
-    
+{% block content %}   
+<div class="view-food-container">
+    <div class="left-img-container" style = "width: 50%;">
+            <img src="/static/images/food-background.jpg" alt="food-background">
+        </div>
     <div class = "about-us">
-        <h1 style = 'font-weight: normal;'><u>About Us</u></h1>  
+        <a onclick="history.back()">
+            <button class = "backbutton" style = "float: left; margin-right: -125px;">Back</button>
+        </a> 
+        <h1 style = 'font-weight: normal;'><u>About Us</u></h1> 
         <h2 style = "color: #FFCA57;text-align: left;" >Our Mission</h2>
         <p style = "text-align: left;">ByteBite is an application that aims to make it quick and easy to find nutritional information about different foods. We’ve noticed that most other applications don’t provide all the necessary information for people that have food restrictions or are doing specific diets, so we want to make a website that has all the information in the same place.</p>
         <h2 style = "color: #FFCA57;text-align: left;">Our Team</h2>
@@ -50,4 +56,10 @@
         </div>
         
     </div>
+    <div class="right-img-container" style = "width: 50%;">
+        <img src="/static/images/food-background.jpg" alt="food-background">
+    </div>
+</div>
+
+    
 {% endblock %}

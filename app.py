@@ -1,7 +1,13 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, redirect
 from dotenv import load_dotenv
 import os
 import requests
+import psycopg
+
+# please make a python file name db_secrets.py 
+# and save database password as DB_PASS
+
+#from db_secrets import DB_PASS
 
 load_dotenv()
 
@@ -30,7 +36,34 @@ def calculator():
 
 @app.route('/builder')
 def builder():
+    user_id = session.get('user')
+
+    
+
     return render_template('builder.html')
+
+@app.post('/meal')
+def create_meal():
+    
+    name = request.form['name']
+    ingredients = request.form['ingredients']
+    # CHANGE
+    create_meal(name, ingredients)
+    return redirect('/builder')
+
+@app.post('/meal/<int:meal_id>/edit')
+def edit_meal(meal_id):
+    name = request.form['name']
+    ingredients = request.form['ingredients']
+    # CHANGE
+    edit_meal(meal_id, name, ingredients)
+    return redirect('/builder')
+
+@app.post('/meal/<int:meal_id>/delete')
+def delete_meal(meal_id):
+# CHANGE
+    delete_meal(meal_id)
+    return redirect('/builder')
 
 @app.route('/food')
 def food():
