@@ -40,7 +40,9 @@ def food():
 def foodsearch():
     return render_template('foodsearch.html')
 
-# Big Api Call 
+# API Functions
+
+# Big API Call 
 @app.get('/food-list')
 def food_list():
     api_key = os.getenv('API_KEY')
@@ -53,6 +55,63 @@ def food_list():
         return data
     except requests.exceptions.RequestException as e:
         return jsonify(errMsg = str(e)), 500
+    
+# Returns Information on a specific food item. 
+# Food's fdcId is a required route parameter
+# @app.get('/food/<id>')
+# def food_info(id):
+#     api_key = os.getenv('API_KEY')
+#     url = f'https://api.nal.usda.gov/fdc/v1/food/{id}?api_key={api_key}'
+    
+#     try:
+#         res = requests.get(url)
+#         res.raise_for_status()
+#         data = res.json()
+#         return jsonify(data=data)
+#     except requests.exceptions.RequestException as e:
+#         return jsonify(errMsg = str(e)), 500
+    
+# Searches a food item by name
+# Search query is a required route parameter
+@app.get('/search/<query>')
+def query_food(query):
+    api_key = os.getenv('API_KEY')
+    url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}&pageSize={10}'
+
+    try:
+        res = requests.get(url)
+        res.raise_for_status()
+        data = res.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        return jsonify(errMsg = str(e)), 500
+
+# Feature Functionalites
+
+def get_food_info(id):
+    api_key = os.getenv('API_KEY')
+    url = f'https://api.nal.usda.gov/fdc/v1/food/{id}?api_key={api_key}'
+    
+    try:
+        res = requests.get(url)
+        res.raise_for_status()
+        data = res.json()
+        return data
+    except requests.exceptions.RequestException as e:
+        return {"errMsg": str(e)}
+
+# Get ingredients of a specific food
+@app.get('/food/<id>/ingredients')
+def food_ingredients(id):
+    data = get_food_info(id)
+    if "errMsg" in data:
+        return jsonify(data), 500
+    
+    ingredients = data.get("ingredients")
+    if ingredients is None:
+        return jsonify(errMsg="Ingredients not found"), 404
+
+    return jsonify(ingredients=ingredients)
 
 if __name__ == '__main__':
     app.run(debug=True)
