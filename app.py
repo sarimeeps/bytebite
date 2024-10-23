@@ -45,7 +45,6 @@ def login():
     session['user'] = user['username']
     return redirect(url_for('index'))
 
-
 @app.get('/register')
 def register():
     return render_template('register.html')
