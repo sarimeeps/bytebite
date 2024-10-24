@@ -68,24 +68,24 @@ def register_user():
         error = "Please use a valid email address."
         return render_template('register.html', error=error, email=email, username=username, password=password)
 
+    if user_repository.get_user_by_email(email):
+        error = "Email is already registered."
+        return render_template('register.html', error=error, username=username, password=password)
+
+    if user_repository.get_user_by_username(username):
+        error = "Username is already taken."
+        return render_template('register.html', error=error, email=email, password=password)
+    
+    if password != confirm_password:
+        error = "Passwords do not match."
+        return render_template('register.html', error=error, email=email, username=username, password=password)
+
     if not re.match(password_regex, password):
         error = "Password must contain at least 12 characters including uppercase, lowercase, number, and special character."
         return render_template('register.html', error=error, email=email, username=username, password=password)
 
     if not all([email, username, password, confirm_password]):
         error = "All fields are required."
-        return render_template('register.html', error=error, email=email, username=username, password=password)
-
-    if user_repository.get_user_by_email(email):
-        error = "Email is already registered."
-        return render_template('register.html', error=error, username=username, password=password)
-    
-    if user_repository.get_user_by_username(username):
-        error = "Username is already taken."
-        return render_template('register.html', error=error, email=email, password=password)
-
-    if password != confirm_password:
-        error = "Passwords do not match."
         return render_template('register.html', error=error, email=email, username=username, password=password)
 
     user_repository.create_user(email, username, password)
