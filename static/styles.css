@@ -58,11 +58,16 @@ ul{
 }
 
 .nav-right-container{
-    width: 450px;
+    display: flex;
+    width: 480px;
     height: 40px;
     position: relative;
     right: 0;
     top: 10px;
+}
+
+.nav-profile{
+    margin-top: -10px;
 }
 
 .nav-right .txt-box{
@@ -115,6 +120,26 @@ footer {
     height: 100%;
     padding: 15px;
     
+}
+
+.back-button{
+    font-weight: bold;
+    color: black;
+    background-color: #FFCA57;
+    width: 60px;
+    border-radius: 5%;
+    padding: 5px;
+}
+.profile{
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+.rounded-circle{
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 /* Builder */
