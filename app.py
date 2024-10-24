@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
-import os
+import os, re
 import requests
 import psycopg
 from repositories import user_repository, meal_repository
@@ -14,6 +14,9 @@ appConfig = {
 }
 
 app.secret_key = appConfig["FLASK SECRET"]
+
+email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$'
 
 # Page Routes
 @app.get('/')
@@ -51,8 +54,43 @@ def login():
     return redirect(url_for('index'))
 
 @app.get('/register')
-def register():
+def register_page():
     return render_template('register.html')
+
+@app.route('/register', methods=['POST'])
+def register_user():
+    email = request.form.get('email')
+    username = request.form.get('username')
+    password = request.form.get('password')
+    confirm_password = request.form.get('confirm_password')
+
+    if not re.match(email_regex, email):
+        error = "Please use a valid @uncc.edu email address."
+        return render_template('signup.html', error=error)
+
+    if not re.match(password_regex, password):
+        error = "Password must contain at least 12 characters including uppercase, lowercase, number, and special character."
+        return render_template('register.html', error=error, email=email, username=username, password=password)
+
+    if not all([email, username, password, confirm_password]):
+        error = "All fields are required."
+        return render_template('register.html', error=error, email=email, username=username, password=password)
+
+    if user_repository.get_user_by_email(email):
+        error = "Email is already registered."
+        return render_template('register.html', error=error, username=username, password=password)
+    
+    if user_repository.get_user_by_username(username):
+        error = "Username is already taken."
+        return render_template('register.html', error=error, email=email, password=password)
+
+    if password != confirm_password:
+        error = "Passwords do not match."
+        return render_template('register.html', error=error, email=email, username=username, password=password)
+
+    user_repository.create_user(email, username, password)
+
+    return redirect(url_for('login_page'))
 
 @app.get('/calculator')
 def calculator():
