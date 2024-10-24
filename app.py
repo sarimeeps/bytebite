@@ -65,8 +65,8 @@ def register_user():
     confirm_password = request.form.get('confirm_password')
 
     if not re.match(email_regex, email):
-        error = "Please use a valid @uncc.edu email address."
-        return render_template('signup.html', error=error)
+        error = "Please use a valid email address."
+        return render_template('register.html', error=error, email=email, username=username, password=password)
 
     if not re.match(password_regex, password):
         error = "Password must contain at least 12 characters including uppercase, lowercase, number, and special character."
