@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <title>Document</title>
+    <title>Login</title>
 </head>
 <body>
     <div class="login-container">
         <div class="img-container-1">
-            <img src="../static/images/food-background.jpg" alt="">
+            <img src="{{ url_for('static', filename='images/food-background.jpg') }}" alt="">
         </div>
         <div class="form-container">
             <div class="header">
@@ -23,27 +23,41 @@
             </div>
             <div class="form-grid">
                 <div class="logo-signin">
-                    <img src="../static/images/logo.jpg" alt="logo">
+                    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo">
                 </div>
-                <form action="#" class="form-box active">
-                    <input type="text" class="txt-box" id="username" name="username" placeholder="Username" required>
-                    <input type="text" class="txt-box" id="password" name="password" placeholder="Password" required>
+                
+                <form action="{{ url_for('login') }}" method="POST" class="form-box active">
+                    <!-- Username input with value pre-filled if available -->
+                    <input type="text" class="txt-box" id="username" name="username" 
+                           placeholder="Username" value="{{ username or '' }}" required>
+
+                    <!-- Password input -->
+                    <input type="password" class="txt-box" id="password" name="password" placeholder="Password" required>
+                    
+                    <!-- Display error message if it exists -->
+                    {% if error %}
+                    <div class="error-message">
+                        <p style="color: red;">{{ error }}</p>
+                    </div>
+                    {% endif %}
+
                     <div class="register-submit-container">
                         <button type="submit" class="register-submit">Sign In</button>
                     </div>
                 </form>
-                    <div class="separator">
-                        <div class="separator-line"></div>
-                        <div class="separator-txt">or</div>
-                        <div class="separator-line"></div>
-                    </div>
-                    <div class="google-container">
-                        <button class="google-btn">Sign in with Google</button>
-                    </div>
+                
+                <div class="separator">
+                    <div class="separator-line"></div>
+                    <div class="separator-txt">or</div>
+                    <div class="separator-line"></div>
+                </div>
+                <div class="google-container">
+                    <button class="google-btn">Sign in with Google</button>
+                </div>
             </div>
         </div>
         <div class="img-container-2">
-            <img src="../static/images/food-background.jpg" alt="">
+            <img src="{{ url_for('static', filename='images/food-background.jpg') }}" alt="">
         </div>
     </div>
 </body>
