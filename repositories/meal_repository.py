@@ -7,7 +7,7 @@ def create_meal(name, ingredients):
     # CHANGE
     with psycopg.connect(
         conninfo=get_database_url()
-    ) as conn:
+        ) as conn:
         with conn.cursor() as cur:
             cur.execute(
             'INSERT INTO meals (name, ingredients, favorite) VALUES (%s, %s, %s)',

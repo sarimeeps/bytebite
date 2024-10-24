@@ -26,6 +26,11 @@
                 <a href="{{ url_for('about_page') }}">About Us</a>
                 <input type="text" class="txt-box" placeholder="Search...">
                 <a href="{{ url_for('login_page') }}">Login</a>
+                <div class="nav-profile">
+                <a href="{{url_for('profile')}}">
+                <img class="rounded-circle" src="{{ profile_picture }}" width="40" height="40">
+                </a>
+                </div>
             </div>    
         </div>
     </nav>
