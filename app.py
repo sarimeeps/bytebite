@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 import os, re
 import requests
-import psycopg
+from flask_bcrypt import Bcrypt
 from repositories import user_repository, meal_repository
 from dotenv import load_dotenv
 
