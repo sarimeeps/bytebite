@@ -7,6 +7,6 @@ def get_pool():
     global pool
     if pool is None:
         pool = ConnectionPool(
-            conninfo=get_database_url()
+            conninfo = get_database_url()
         )
     return pool
