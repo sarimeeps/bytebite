@@ -58,11 +58,16 @@ ul{
 }
 
 .nav-right-container{
-    width: 450px;
+    display: flex;
+    width: 480px;
     height: 40px;
     position: relative;
     right: 0;
     top: 10px;
+}
+
+.nav-profile{
+    margin-top: -10px;
 }
 
 .nav-right .txt-box{
@@ -115,6 +120,26 @@ footer {
     height: 100%;
     padding: 15px;
     
+}
+
+.back-button{
+    font-weight: bold;
+    color: black;
+    background-color: #FFCA57;
+    width: 60px;
+    border-radius: 5%;
+    padding: 5px;
+}
+.profile{
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+.rounded-circle{
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 /* Builder */
@@ -926,4 +951,40 @@ button, input[type="submit"] {
     outline: 2px solid black;
     margin-left: 40%;
     margin-top: 15%
+}
+
+.search-box2{
+    width: 73%;
+    background-color: white;
+    border-radius: 5px;
+    height: 30px;
+    margin-top: 7%;
+    margin-left: 13%;
+    color: black;
+    text-align: left;
+    padding-top: 10px;
+    padding-left: 15px;
+}
+
+#search-titles{
+    color: white;
+    width: 90%;
+    margin-left: 45px;
+    margin-top: 2%;
+
+}
+
+#search-titles td, #search-titles th{
+    padding: 8px;
+    text-align: left;
+}
+
+#search-titles tr:nth-child(even){background-color: #6b737b;}
+
+#search-titles th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    color: white;
+    font-weight: normal;
 }
