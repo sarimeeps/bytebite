@@ -454,14 +454,15 @@ button, input[type="submit"] {
     flex-direction: column;
 }
 
-.search-box .txt-box-search{
+.search-box .txt-box{
     align-self: center;
     border: 1px solid rgb(156, 156, 156);
     border-radius: 5px;
     width: 400px;
+    height: 20px;
     padding: 10px;
-    position: absolute; 
-    top: 55%;   
+    margin-top: 80px;
+    margin-left: 65px;
 }
 
 .search-box p{
@@ -955,7 +956,7 @@ button, input[type="submit"] {
 
 .search-box2{
     width: 73%;
-    background-color: white;
+    /* background-color: white; */
     border-radius: 5px;
     height: 30px;
     margin-top: 7%;
@@ -964,6 +965,15 @@ button, input[type="submit"] {
     text-align: left;
     padding-top: 10px;
     padding-left: 15px;
+}
+
+.search-box2 .txt-box{
+    align-self: center;
+    border: 1px solid rgb(156, 156, 156);
+    border-radius: 5px;
+    width: 600px;
+    height: 20px;
+    padding: 10px;
 }
 
 #search-titles{
