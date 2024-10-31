@@ -140,9 +140,24 @@ def delete_meal(meal_id):
 def food():
     return render_template('food.html')
 
-@app.get('/foodsearch')
+
+# FUNCTION FOR SEARCHING A FOOD ITEM
+@app.post('/foodsearch/')
 def foodsearch():
-    return render_template('foodsearch.html')
+ 
+    query = request.form.get("query")
+
+    api_key = os.getenv('API_KEY')
+    url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}&pageSize={10}'
+    print(query)
+    try:
+        res = requests.get(url)
+        res.raise_for_status()
+        data = res.json()
+        foods = data["foods"]
+        return render_template('foodsearch.html', foods=foods)
+    except requests.exceptions.RequestException as e:
+        return jsonify(errMsg = str(e)), 500
 
 # Route for profile page
 @app.route('/profile')
@@ -155,7 +170,7 @@ def profile():
     return render_template('profile.html', profile_picture=profile_picture)
 
 # Big Api Call 
-# USDA FoodData Central
+# USDA FoodData Central 
 @app.get('/food-list')
 def food_list():
     api_key = os.getenv('API_KEY')
@@ -166,10 +181,29 @@ def food_list():
         response = requests.get(url)
         response.raise_for_status()
         data = response.json() # store API response in JSON
+        print(data)
         return data
     except requests.exceptions.RequestException as e:
         # if theres an error with the request, an error message will be returned
         return jsonify(errMsg = str(e)), 500
+    
+    
+#Returns Information on a specific food item. 
+#Food's fdcId is a required route parameter
+@app.get('/food/<id>')
+def food_info(id):
+    api_key = os.getenv('API_KEY')
+    url = f'https://api.nal.usda.gov/fdc/v1/food/{id}?api_key={api_key}'
+    
+    try:
+        res = requests.get(url)
+        res.raise_for_status()
+        data = res.json()
+        return jsonify(data=data)
+    except requests.exceptions.RequestException as e:
+        return jsonify(errMsg = str(e)), 500
+    
+
 
 # Starts the Flask application in debug mode
 if __name__ == '__main__':
