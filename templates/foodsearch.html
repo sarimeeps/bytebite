@@ -10,7 +10,15 @@
         <a onclick="history.back()">
             <button class = "backbutton" style = "float: left;">Back</button>
         </a>
-        <div class = "search-box2">Yogurt</div>
+        <div class = "search-box2">
+        <form action="/foodsearch/" method="POST">
+          <input type="text" class="txt-box" name="query" placeholder="Search...">
+          <label for="query"></label>
+          <button type="submit"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
+        </form>
+        </div>
+
+        {% if foods.length != 0 %}
 
         <table id="search-titles">
             <tr>
@@ -19,69 +27,22 @@
                 <th>Food Category</th>
                 <th>Brand</th>
             </tr>
+            {% for food in foods %}
             <tr>
-                <td>1321038</td>
-                <td>Yogurt</td>
-                <td>Yogurt</td>
-                <td>Chobani</td>
-              </tr>
-              <tr>
-                <td>1239149</td>
-                <td>Yogurt Pretzel</td>
-                <td>Yogurt,Peanuts,Seeds</td>
-                <td>Wholefood Market</td>
-              </tr>
-              <tr>
-                <td>3124459</td>
-                <td>Yogurt Raisins</td>
-                <td>Yogurt,Peanuts,Seeds</td>
-                <td>First Street</td>
-              </tr>
-              <tr>
-                <td>3457395</td>
-                <td>Yogurt</td>
-                <td>Yogurt</td>
-                <td>Activia</td>
-              </tr>
-              <tr>
-                <td>1321039</td>
-                <td>Yogurt Flavored Almonds</td>
-                <td>Yogurt,Peanuts,Seeds</td>
-                <td>Activia</td>
-              </tr>
-              <tr>
-                <td>1237462</td>
-                <td>Greek Yogurt</td>
-                <td>Yogurt</td>
-                <td>Yoplait</td>
-              </tr>
-              <tr>
-                <td>1273827</td>
-                <td>Greek Yogurt</td>
-                <td>Yogurt</td>
-                <td>Chobani</td>
-              </tr>
-              <tr>
-                <td>2373952</td>
-                <td>Yogurt</td>
-                <td>Yogurt</td>
-                <td>Publix</td>
-              </tr>
-              <tr>
-                <td>1285483</td>
-                <td>Gogurt</td>
-                <td>Yogurt</td>
-                <td>Yoplait</td>
-              </tr>
-              <tr>
-                <td>1726399</td>
-                <td>Yogurt</td>
-                <td>Yogurt</td>
-                <td>Activia</td>
-              </tr>
+                <td>{{ food.fdcId }}</td>
+                <td>{{ food.description }}</td>
+                <td>{{ food.foodCategory }}</td>
+                <td>{{ food.brandName }}</td>
+            </tr>
+            {% endfor %}
         </table>
+        {% else %}
 
+      <h1>There are no foods to display</h1>
+
+      {% endif %}
     </div>
+      
     <div class="right-img-container" style = "width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>

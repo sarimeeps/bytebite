@@ -9,11 +9,14 @@
         <div class="blur-container"></div>
         <div class="search-box-container">
             <div class="search-box">
-                <p>Find Your Food</p>
-                <a href="{{ url_for('foodsearch') }}">
-                    <button class = "searchbutton" style = "font-family: fantasy; font-size: larger;">Search</button>
-                </a>
-
+                <p>Find Your Food</p>       
+                    <div class = "search-box">
+                        <form action="/foodsearch/" method="POST">
+                        <input type="text" class="txt-box" name="query" placeholder="Search...">
+                        <label for="query"></label>
+                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="flour-container">
