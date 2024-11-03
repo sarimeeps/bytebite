@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 import os, re
 import requests
-import psycopg
+from flask_bcrypt import Bcrypt
 from repositories import user_repository, meal_repository
 from dotenv import load_dotenv
 
@@ -10,6 +10,8 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
+
+bcrypt = Bcrypt(app)
 
 appConfig = {
     "FLASK SECRET": os.getenv('SECRET_KEY')
@@ -23,7 +25,7 @@ password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?
 # Page Routes
 @app.get('/')
 def index():
-    return render_template('index.html') # renders homepage
+    return render_template('index.html')
 
 @app.get('/about')
 def about_page():
@@ -48,9 +50,9 @@ def login():
         error = "User does not exist."
         return render_template('login.html', error=error, username=username)
 
-    if user['password'] != password:
-        error = "Incorrect password, try again!"
-        return render_template('login.html', error=error, username=username)
+    if not bcrypt.check_password_hash(user['password'], password):
+        error = "Incorrect password, try again."
+        return render_template('login.html', error=error)
 
     session['user'] = user['username']
     return redirect(url_for('index'))
@@ -89,8 +91,10 @@ def register_user():
     if not all([email, username, password, confirm_password]):
         error = "All fields are required."
         return render_template('register.html', error=error, email=email, username=username, password=password)
+    
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    user_repository.create_user(email, username, password)
+    user_repository.create_user(email, username, hashed_password)
 
     return redirect(url_for('login_page'))
 
