@@ -140,9 +140,37 @@ def delete_meal(meal_id):
     delete_meal(meal_id)
     return redirect('/builder')
 
-@app.get('/food')
-def food():
-    return render_template('food.html')
+@app.get('/food/<id>')
+def food(id):
+    api_key = os.getenv('API_KEY')
+    url = f'https://api.nal.usda.gov/fdc/v1/food/{id}?api_key={api_key}'
+
+    nutrient_ids = [1087, 1093, 1104, 1079, 2000, 1004, 1003, 1008, 1175, 1257, 
+                    1005, 1092, 1089, 1110, 1253, 1293]
+    
+
+    try:
+        res = requests.get(url)
+        res.raise_for_status()
+        data = res.json()
+        food_name = data["description"]
+
+        food_info = [nutrient for nutrient in data["foodNutrients"] 
+                     if nutrient["nutrient"]["id"] in nutrient_ids]
+        if "brandName" in data and "ingredients" in data:
+            food_brand = data["brandName"]
+            food_ingredients = data["ingredients"]
+            return render_template('food.html', food_info=food_info, food_name=food_name, food_brand=food_brand, food_ingredients=food_ingredients)
+        if "brandName" in data:
+            food_brand = data["brandName"]
+            return render_template('food.html', food_info=food_info, food_name=food_name, food_brand=food_brand)
+        if "ingredients" in data:
+            food_ingredients = data["ingredients"]
+            return render_template('food.html', food_info=food_info, food_name=food_name, food_ingredients=food_ingredients)
+        if "brandName" not in data and "ingredients" not in data:
+            return render_template('food.html', food_info=food_info, food_name=food_name)
+    except requests.exceptions.RequestException as e:
+        return jsonify(errMsg = str(e)), 500
 
 
 # FUNCTION FOR SEARCHING A FOOD ITEM

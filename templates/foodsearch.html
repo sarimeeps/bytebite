@@ -29,7 +29,7 @@
             </tr>
             {% for food in foods %}
             <tr>
-                <td>{{ food.fdcId }}</td>
+                <td><a href="{{ url_for('food', id=food.fdcId)}}">{{ food.fdcId }}</a></td>
                 <td>{{ food.description }}</td>
                 <td>{{ food.foodCategory }}</td>
                 <td>{{ food.brandName }}</td>

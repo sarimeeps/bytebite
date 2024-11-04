@@ -12,38 +12,33 @@
                 <button class="backbutton">Back</button>
             </a>
         </div>
-        <div class="food-display">
-            <div class="cutting-board">
-                <img class="cutting-board"src="/static/images/cutting-board.jpg" alt="cutting-board">
-            </div>
-            <div class="food-img">
-                <img src="/static/images/temp-pic.jpg" alt="food-pic">
-            </div>
-        </div>
         <div class="food-info">
             <div class="food-title">
-                <p class="food-title">Peanuts</p>
+                <p class="food-title">{{ food_name }}</p>
             </div>
             <div class="food-brand">
-                <p>Brand: Kroger</p>
+                {% if food_brand %}
+                <p>Brand: {{ food_brand }}</p>
+                {% else %}
+                <p>No Brand</p>
+                {% endif %}
             </div>
             <div class="nutrition-facts">
                 <ul>
-                    <li class="facts-title">Ingredients</li>
-                    <li></li>
+                    <li class="facts-title">Nutrients</li>
+                    {% for nutrient in food_info %}
+                    <li class="nutrients">{{ nutrient.nutrient.name }}: {{ nutrient.amount }} {{ nutrient.nutrient.unitName }}</li>
+                    {% endfor %}
                 </ul>
             </div>
             <div class="daily-value">
                 <ul>
-                    <li class="facts-title">% Daily Value*</li>
-                    <li>Total Fat: ##</li>
-                    <li>Saturated Fat: ##</li>
-                    <li>Trans Fat: ##</li>
-                    <li>Cholesterol: ##</li>
-                    <li>Total Carbohydrate: ##</li>
-                    <li>Dietary Fiber: ##</li>
-                    <li>Sugars: ##</li>
-                    <li>Protein: ##</li>
+                    <li class="facts-title">Ingredients</li>
+                    {% if food_ingredients %}
+                    <li class="ingredients">{{ food_ingredients }}</li>
+                    {% else %}
+                    <li>No ingredients to display</li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
