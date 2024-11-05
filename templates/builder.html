@@ -18,10 +18,12 @@
             <div class="meal_name">
             <input type="text" id="meal_name" name="meal_name" placeholder="Name..." style="width: 500px; padding: 5px;"><br><br>
             </div>
+            </form>
             <div class="add-item">
-            <input type="submit" value="Add Item +">
+                <form action="/foodmeal" method="POST" style="display:inline;">
+                    <input type="submit" value="Add Item +" style="padding: 10px 20px; background-color: #FFCA57; color: white; text-decoration: none; border-radius: 5px;">
+                </form>
             </div>
-        </form>
         <hr style="height: 2px;background-color: white;">
         <div class="create-meal" style="float: right;">
             <form action="/builder">

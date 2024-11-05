@@ -22,6 +22,38 @@ app.secret_key = appConfig["FLASK SECRET"]
 email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$'
 
+@app.post('/add_to_meal')
+def add_to_meal():
+    fdcId = request.form.get("fdcId")
+    description = request.form.get("description")
+
+    if 'meal_items' not in session:
+        session['meal_items'] = []
+    session['meal_items'].append({
+    'fdcId': fdcId,
+    'description': description
+    })
+    return redirect(url_for('builder'))
+
+@app.route('/foodmeal/', methods=['GET', 'POST'])
+def foodmeal():
+    query = request.form.get("query") if request.method == 'POST' else None
+    if query:
+        api_key = os.getenv('API_KEY')
+        url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}&pageSize={10}'
+        print(query)
+        try:
+            res = requests.get(url)
+            res.raise_for_status()
+            data = res.json()
+            foods = data["foods"]
+            return render_template('foodmeal.html', foods=foods)
+        except requests.exceptions.RequestException as e:
+            return jsonify(errMsg = str(e)), 500
+    else:
+        return render_template('foodmeal.html', foods=[])
+
+
 # Page Routes
 @app.get('/')
 def index():
