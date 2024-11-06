@@ -8,7 +8,7 @@ password VARCHAR(255)
 CREATE TABLE IF NOT EXISTS meal (
     meal_id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-    meal_name VARCHAR(255) NOT NULL
+    meal_name VARCHAR(255) NULL
 );
 
 CREATE TABLE IF NOT EXISTS food (

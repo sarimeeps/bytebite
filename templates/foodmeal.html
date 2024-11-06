@@ -35,9 +35,10 @@
                 <td>{{ food.foodCategory }}</td>
                 <td>{{ food.brandName }}</td>
                 <td>
-                    <form action="add_to_meal" method="POST">
+                    <form action="/add_to_meal" method="POST">
                         <input type="hidden" name="fdcId" value="{{ food.fdcId }}">
                         <input type="hidden" name="description" value="{{ food.description }}">
+                        <input type="hidden" name="meal_id" value="{{ session.get('meal_id') }}">
                         <button type="submit">+</button>
                     </form>
                 </td>

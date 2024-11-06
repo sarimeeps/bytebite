@@ -22,19 +22,6 @@ app.secret_key = appConfig["FLASK SECRET"]
 email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$'
 
-@app.post('/add_to_meal')
-def add_to_meal():
-    fdcId = request.form.get("fdcId")
-    description = request.form.get("description")
-
-    if 'meal_items' not in session:
-        session['meal_items'] = []
-    session['meal_items'].append({
-    'fdcId': fdcId,
-    'description': description
-    })
-    return redirect(url_for('builder'))
-
 @app.route('/foodmeal/', methods=['GET', 'POST'])
 def foodmeal():
     query = request.form.get("query") if request.method == 'POST' else None
@@ -53,6 +40,29 @@ def foodmeal():
     else:
         return render_template('foodmeal.html', foods=[])
 
+@app.post('/add_to_meal')
+def add_to_meal():
+    meal_id = session.get('meal_id')
+    if not meal_id:
+        return redirect(url_for('builder')) 
+
+    fdcId = request.form.get('fdcId')
+    description = request.form.get('description')
+
+    # Add the food to the meal
+    meal_repository.add_food_to_meal(meal_id, fdcId, description)
+
+    return redirect(url_for('builder'))  
+
+@app.post('/update_meal_name')
+def update_meal_name():
+    meal_id = session.get('meal_id')
+    if not meal_id:
+        return redirect(url_for('builder'))  
+    meal_name = request.form.get('meal_name')
+    meal_repository.update_meal_name(meal_id, meal_name)
+
+    return redirect(url_for('builder'))
 
 # Page Routes
 @app.get('/')
@@ -87,6 +97,7 @@ def login():
         return render_template('login.html', error=error)
 
     session['user'] = user['username']
+    session['user_id'] = user['user_id']
     return redirect(url_for('index'))
 
 @app.get('/register')
@@ -134,24 +145,20 @@ def register_user():
 def calculator():
     return render_template('calculator.html')
 
-@app.get('/builder')
+@app.route('/builder', methods=['GET', 'POST'])
 def builder():
-    # user_id = session.get('user')
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login_page'))
 
-    
+    if request.method == 'POST':
+        if 'meal_id' not in session:
+            meal_id = meal_repository.create_meal(user_id)
+            session['meal_id'] = meal_id
 
     return render_template('builder.html')
 
-# Route for new meal creation
-@app.post('/meal')
-def create_meal():
-    # gets the form data from user
-    name = request.form['name']
-    ingredients = request.form['ingredients']
-    # CHANGE
-    # adds user information to database
-    create_meal(name, ingredients)
-    return redirect('/builder')
+
 
 # Route for editing a existing meal
 @app.post('/meal/<int:meal_id>/edit')

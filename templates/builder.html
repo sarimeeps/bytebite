@@ -11,13 +11,14 @@
             <button type="button" onclick="window.history.back();">←Back</button>
             </div>
     <h1 style="text-align: center;font-weight: normal;">Meal Builder</h1>
-        <form action="/builder" style="text-align: center;">
+        <form action="/update_meal_name" method="POST" style="text-align: center;">
             <div class="meal_name">
             <label for="meal_name" style="color: #FFCA57;">Meal Name</label><br>
             </div>
             <div class="meal_name">
             <input type="text" id="meal_name" name="meal_name" placeholder="Name..." style="width: 500px; padding: 5px;"><br><br>
             </div>
+            <input type="submit" value="Update Meal Name">
             </form>
             <div class="add-item">
                 <form action="/foodmeal" method="POST" style="display:inline;">
