@@ -3,6 +3,17 @@ from repositories.db import get_pool, get_database_url
 from psycopg.rows import dict_row
 import psycopg
 
+def get_food(meal_id):
+    with psycopg.connect(conninfo=get_database_url()) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                'SELECT fdcId, description FROM food WHERE meal_id = %s',
+                (meal_id,)
+            )
+            foods = cur.fetchall()
+            return foods
+
+
 def create_meal(user_id, meal_name="New Meal"):
     with psycopg.connect(conninfo=get_database_url()) as conn:
         with conn.cursor() as cur:
@@ -25,16 +36,6 @@ def update_meal_name(meal_id, meal_name):
 
 def add_food_to_meal(meal_id, fdcId, description):
     with psycopg.connect(conninfo=get_database_url()) as conn:
-        with conn.cursor() as cur:
-            cur.execute(
-                'INSERT INTO food (meal_id, fdcId, description) VALUES (%s, %s, %s)',
-                (meal_id, fdcId, description)
-            )
-
-def add_meal(meal_id, fdcId, description):
-    with psycopg.connect(
-        conninfo=get_database_url()
-        ) as conn:
         with conn.cursor() as cur:
             cur.execute(
                 'INSERT INTO food (meal_id, fdcId, description) VALUES (%s, %s, %s)',

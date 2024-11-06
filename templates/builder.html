@@ -20,6 +20,11 @@
             </div>
             <input type="submit" value="Update Meal Name">
             </form>
+            <ul>
+                {% for item in session.get('meal_items', []) %}
+                    <li>{{ item.description }}</li>
+                {% endfor %}
+            </ul>
             <div class="add-item">
                 <form action="/foodmeal" method="POST" style="display:inline;">
                     <input type="submit" value="Add Item +" style="padding: 10px 20px; background-color: #FFCA57; color: white; text-decoration: none; border-radius: 5px;">
@@ -27,11 +32,11 @@
             </div>
         <hr style="height: 2px;background-color: white;">
         <div class="create-meal" style="float: right;">
-            <form action="/builder">
+            <form action="/create_meal" method="POST">
                 <input type="submit" value="Create Meal">
             </form>
         </div>
-        <h2 style="text-align: left; font-weight: normal;">Items in meal:</h2>
+        <h2 style="text-align: left; font-weight: normal;">Items in meal: {{ food_count }}</h2>
     </div>
 
     <div class="right-img-container" style = "width: 20%;">

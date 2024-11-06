@@ -22,47 +22,6 @@ app.secret_key = appConfig["FLASK SECRET"]
 email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$'
 
-@app.route('/foodmeal/', methods=['GET', 'POST'])
-def foodmeal():
-    query = request.form.get("query") if request.method == 'POST' else None
-    if query:
-        api_key = os.getenv('API_KEY')
-        url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}&pageSize={10}'
-        print(query)
-        try:
-            res = requests.get(url)
-            res.raise_for_status()
-            data = res.json()
-            foods = data["foods"]
-            return render_template('foodmeal.html', foods=foods)
-        except requests.exceptions.RequestException as e:
-            return jsonify(errMsg = str(e)), 500
-    else:
-        return render_template('foodmeal.html', foods=[])
-
-@app.post('/add_to_meal')
-def add_to_meal():
-    meal_id = session.get('meal_id')
-    if not meal_id:
-        return redirect(url_for('builder')) 
-
-    fdcId = request.form.get('fdcId')
-    description = request.form.get('description')
-
-    # Add the food to the meal
-    meal_repository.add_food_to_meal(meal_id, fdcId, description)
-
-    return redirect(url_for('builder'))  
-
-@app.post('/update_meal_name')
-def update_meal_name():
-    meal_id = session.get('meal_id')
-    if not meal_id:
-        return redirect(url_for('builder'))  
-    meal_name = request.form.get('meal_name')
-    meal_repository.update_meal_name(meal_id, meal_name)
-
-    return redirect(url_for('builder'))
 
 # Page Routes
 @app.get('/')
@@ -145,6 +104,59 @@ def register_user():
 def calculator():
     return render_template('calculator.html')
 
+@app.route('/foodmeal/', methods=['GET', 'POST'])
+def foodmeal():
+    query = request.form.get("query") if request.method == 'POST' else None
+    if query:
+        api_key = os.getenv('API_KEY')
+        url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}&pageSize={10}'
+        print(query)
+        try:
+            res = requests.get(url)
+            res.raise_for_status()
+            data = res.json()
+            foods = data["foods"]
+            return render_template('foodmeal.html', foods=foods)
+        except requests.exceptions.RequestException as e:
+            return jsonify(errMsg = str(e)), 500
+    else:
+        return render_template('foodmeal.html', foods=[])
+
+@app.post('/add_to_meal')
+def add_to_meal():
+    item = {'fdcId' : request.form.get('fdcId'),
+            'description' : request.form.get('description')
+    }
+    meal_items = session.get('meal_items', [])
+    meal_items.append(item)
+    session['meal_items'] = meal_items
+    return redirect(url_for('builder'))  
+
+@app.post('/create_meal')
+def create_meal():
+    meal_items = session.get('meal_items', [])
+    meal_id = session.get('meal_id')
+
+    if meal_id and meal_items:
+        for item in meal_items:
+            meal_repository.add_food_to_meal(meal_id, item['fdcId'], item['description'])
+        # Clear the temporary food items after creating the meal
+        session.pop('meal_items', None)
+        session.pop('meal_id', None)
+        return redirect(url_for('profile'))
+    else:
+        return redirect(url_for('builder'))
+
+@app.post('/update_meal_name')
+def update_meal_name():
+    meal_id = session.get('meal_id')
+    if not meal_id:
+        return redirect(url_for('builder'))  
+    meal_name = request.form.get('meal_name')
+    meal_repository.update_meal_name(meal_id, meal_name)
+
+    return redirect(url_for('builder'))
+
 @app.route('/builder', methods=['GET', 'POST'])
 def builder():
     user_id = session.get('user_id')
@@ -155,8 +167,12 @@ def builder():
         if 'meal_id' not in session:
             meal_id = meal_repository.create_meal(user_id)
             session['meal_id'] = meal_id
+    meal_id = session.get('meal_id')
+    meal_items= meal_repository.get_food(meal_id)
+    food = session.get('meal_items', [])
+    food_count= len(food)
 
-    return render_template('builder.html')
+    return render_template('builder.html', meal_items=meal_items, food_count=food_count)
 
 
 
