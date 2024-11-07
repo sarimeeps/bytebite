@@ -14,12 +14,12 @@
     <nav class="navbar">
         <div class="nav-left">
             <div class="logo-container">
-            <span class="app-name"><a href="{{ url_for('index') }}">ByteBite</a></span>
-            <div class="logo-head-container">
-                <img src="/static/images/logo-header.jpg" alt="logo">
+                <span class="app-name"><a href="{{ url_for('index') }}">ByteBite</a></span>
+                <div class="logo-head-container">
+                    <img src="/static/images/logo-header.jpg" alt="logo">
+                </div>
             </div>
         </div>
-            </div>
         </div>
         <div class="nav-right">
             <div class="nav-right-container">
@@ -28,14 +28,14 @@
                 {% if not session['user'] %}
                 <a href="{{ url_for('login_page') }}">Login</a>
                 {% else %}
-                <a href="{{ url_for('login_page') }}">Logout</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
                 <div class="nav-profile">
-                <a href="{{url_for('profile')}}">
-                <img class="rounded-circle" src="{{ profile_picture }}" width="40" height="40">
-                </a>
+                    <a href="{{url_for('profile')}}">
+                        <img class="rounded-circle" src="{{ profile_picture }}" width="40" height="40">
+                    </a>
                 </div>
                 {% endif %}
-            </div>    
+            </div>
         </div>
     </nav>
 

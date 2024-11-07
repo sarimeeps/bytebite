@@ -141,7 +141,7 @@ def register_user():
 
 @app.get('/signup-auth')
 def signup_auth():
-    return render_template("oauth_signup.html")
+    return render_template("profile.html")
 
 @app.post('/signup-auth')
 def signup_auth_post():
@@ -150,6 +150,11 @@ def signup_auth_post():
 
     user_repository.create_oauth_user(username, email)
     return redirect(url_for('profile_page'))
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
 
 @app.get('/calculator')
 def calculator():
@@ -247,12 +252,17 @@ def foodsearch():
 # Route for profile page
 @app.route('/profile')
 def profile():
-    # user = 
+    user = session.get('user')
+
+    if user is None:
+        return redirect(url_for('login_page'))
+    
+    username = session['user']
     # loads default profile picture for the time being
     profile_picture = 'static/images/default-profile-pic.jpg'
     # meals = get_user_meals(user_id)
     # return meals=meals when repo is done
-    return render_template('profile.html', profile_picture=profile_picture)
+    return render_template('profile.html', profile_picture=profile_picture, username=username)
 
 # Big Api Call 
 # USDA FoodData Central 
