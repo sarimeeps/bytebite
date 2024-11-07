@@ -13,7 +13,15 @@ def get_food(meal_id):
             foods = cur.fetchall()
             return foods
 
-
+def get_meal(user_id):
+    with psycopg.connect(conninfo=get_database_url()) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                'SELECT meal_name FROM meal WHERE user_id = %s',
+                (user_id,)
+            )
+            return cur.fetchall()
+        
 def create_meal(user_id, meal_name="New Meal"):
     with psycopg.connect(conninfo=get_database_url()) as conn:
         with conn.cursor() as cur:
