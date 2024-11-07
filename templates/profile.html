@@ -1,6 +1,7 @@
 {% extends "_layout.html" %}
 
 {% block content %}
+{% if session['user'] %}
 <div class = "view-food-container">
     <div class="left-img-container" style = "width: 20%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
@@ -8,13 +9,13 @@
 
     <div class = "profile" style = "width: 50%;">
         <title>Profile</title>
-        <div class="back-button">
-        <button type="button" onclick="window.history.back();">←Back</button>
-        </div>
+        <a onclick="history.back()">
+            <button class = "backbutton" style = "float: left; margin-right: -125px;">Back</button>
+        </a> 
         <div class="media">
             <img class="rounded-circle" src="{{ profile_picture }}" width="150" height="150">
         </div>
-        <h1 style = 'font-weight: normal;'>{'{user.username}''}</h1>  
+        <h1 style = 'font-weight: normal;'>{{session['user']}}</h1>  
         <h2 style = 'font-weight: normal; text-align: left;'>My Meals</h2>
     </div>
 
@@ -22,6 +23,7 @@
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
 </div>
+{% endif %}
 
 
     

@@ -23,7 +23,7 @@
             </div>
             <div class="form-grid">
                 <div class="logo-signin">
-                    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo">
+                    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo"></a>
                 </div>
                 <form action="{{ url_for('register_user') }}" method="POST" class="form-box active">
                     <input type="text" class="txt-box" id="email" name="email" placeholder="Email" value="{{ email }}" required>
