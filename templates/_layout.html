@@ -24,7 +24,10 @@
         <div class="nav-right">
             <div class="nav-right-container">
                 <a href="{{ url_for('about_page') }}">About Us</a>
-                <input type="text" class="txt-box" placeholder="Search...">
+                <form action="/foodsearch/" method="POST">
+                    <input type="text" class="txt-box" name="query" placeholder="Search...">
+                    <label for="query"></label>
+                </form>
                 {% if not session['user'] %}
                 <a href="{{ url_for('login_page') }}">Login</a>
                 {% else %}
