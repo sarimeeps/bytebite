@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 import os, re
-import requests
+import requests, random, string
 from authlib.integrations.flask_client import OAuth
 from flask_bcrypt import Bcrypt
 from repositories import user_repository, meal_repository
@@ -145,11 +145,17 @@ def signup_auth():
 
 @app.post('/signup-auth')
 def signup_auth_post():
-    username = request.form.get('username')
     email = session['email']
 
+    domain_part = email.split('@')[1]
+    random_number = ''.join(random.choices(string.digits, k=5))
+    username = f"{domain_part.split('.')[0]}{random_number}"
+
     user_repository.create_oauth_user(username, email)
-    return redirect(url_for('profile_page'))
+
+    session['user'] = username
+
+    return redirect(url_for('profile'))
 
 @app.route('/logout')
 def logout():
