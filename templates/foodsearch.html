@@ -1,50 +1,77 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-
-<div class= "view-food-container">
-    <div class="left-img-container" style = "width: 25%;">
+<div class="view-food-container">
+    <div class="left-img-container" style="width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
-    <div class = "about-us" style = "width: 90%;">
+    <div class="about-us" style="width: 90%;">
         <a onclick="history.back()">
-            <button class = "backbutton" style = "float: left;">Back</button>
+            <button class="backbutton" style="float: left;">Back</button>
         </a>
-        <div class = "search-box2">
-        <form action="/foodsearch/" method="POST">
-          <input type="text" class="txt-box" name="query" placeholder="Search...">
-          <label for="query"></label>
-          <button type="submit"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
-        </form>
+        <div class="search-box2">
+            <form action="/foodsearch/" method="POST">
+                <input type="text" class="txt-box" name="query" placeholder="Search...">
+                <label for="query"></label>
+                <button type="submit"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
+            </form>
         </div>
 
-        {% if foods.length != 0 %}
-
-        <table id="search-titles">
-            <tr>
-                <th>ID</th>
-                <th>Description</th>
-                <th>Food Category</th>
-                <th>Brand</th>
-            </tr>
-            {% for food in foods %}
-            <tr>
-                <td><a href="{{ url_for('food', id=food.fdcId)}}">{{ food.fdcId }}</a></td>
-                <td>{{ food.description }}</td>
-                <td>{{ food.foodCategory }}</td>
-                <td>{{ food.brandName }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% else %}
-
-      <h1>There are no foods to display</h1>
-
-      {% endif %}
+        {% if foods %}
+            {% if foods.length != 0 %}
+                <table id="search-titles">
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Food Category</th>
+                        <th>Brand</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for food in foods %}
+                        <tr>
+                            <td><a href="{{ url_for('food', id=food.fdcId) }}">{{ food.fdcId }}</a></td>
+                            <td>{{ food.description }}</td>
+                            <td>{{ food.foodCategory }}</td>
+                            <td>{{ food.brandName }}</td>
+                            <td>
+                                <button class="add-to-calculator" 
+                                    data-name="{{ food.description }}" 
+                                    data-calories="{{ food.foodNutrients.calories }}" 
+                                    data-carbs="{{ food.foodNutrients.carbohydrates }}" 
+                                    data-fat="{{ food.foodNutrients.fat }}">
+                                    Add to Calculator
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h1>There are no foods to display</h1>
+            {% endif %}
+        {% endif %}
     </div>
-      
-    <div class="right-img-container" style = "width: 25%;">
+    
+    <div class="right-img-container" style="width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.add-to-calculator').forEach(button => {
+        button.addEventListener('click', function() {
+            const foodData = {
+                name: this.getAttribute('data-name'),
+                calories: this.getAttribute('data-calories'),
+                carbs: this.getAttribute('data-carbs'),
+                fat: this.getAttribute('data-fat')
+            };
+            let foods = JSON.parse(localStorage.getItem('calculatorFoods')) || [];
+            foods.push(foodData);
+            localStorage.setItem('calculatorFoods', JSON.stringify(foods));
+            
+            // Redirect to calculator page
+            window.location.href = "{{ url_for('calculator') }}";
+        });
+    });
+</script>
 {% endblock %}

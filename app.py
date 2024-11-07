@@ -190,6 +190,11 @@ def foodsearch():
         return render_template('foodsearch.html', foods=foods)
     except requests.exceptions.RequestException as e:
         return jsonify(errMsg = str(e)), 500
+    
+@app.get('/foodsearch/')
+def searchpage():
+    
+    return render_template('foodsearch.html')
 
 # Route for profile page
 @app.route('/profile')
