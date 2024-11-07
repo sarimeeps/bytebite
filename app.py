@@ -37,10 +37,13 @@ oauth.register("myApp",
 email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$'
 
+recent_searches = []
+
 # Page Routes
 @app.get('/')
 def index():
-    return render_template('index.html')
+    recent = recent_searches
+    return render_template('index.html', recent=recent)
 
 @app.get('/about')
 def about_page():
@@ -70,6 +73,7 @@ def login():
         return render_template('login.html', error=error)
 
     session['user'] = user['username']
+    session['user_id'] = user['user_id']
     return redirect(url_for('index'))
 
 @app.get('/google-login')
@@ -166,24 +170,77 @@ def logout():
 def calculator():
     return render_template('calculator.html')
 
-@app.get('/builder')
-def builder():
-    # user_id = session.get('user')
+@app.route('/foodmeal/', methods=['GET', 'POST'])
+def foodmeal():
+    query = request.form.get("query") if request.method == 'POST' else None
+    if query:
+        api_key = os.getenv('API_KEY')
+        url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}&pageSize={10}'
+        print(query)
+        try:
+            res = requests.get(url)
+            res.raise_for_status()
+            data = res.json()
+            foods = data["foods"]
+            return render_template('foodmeal.html', foods=foods)
+        except requests.exceptions.RequestException as e:
+            return jsonify(errMsg = str(e)), 500
+    else:
+        return render_template('foodmeal.html', foods=[])
 
-    
+@app.post('/add_to_meal')
+def add_to_meal():
+    item = {'fdcId' : request.form.get('fdcId'),
+            'description' : request.form.get('description')
+    }
+    meal_items = session.get('meal_items', [])
+    meal_items.append(item)
+    session['meal_items'] = meal_items
+    return redirect(url_for('builder'))  
 
-    return render_template('builder.html')
-
-# Route for new meal creation
-@app.post('/meal')
+@app.post('/create_meal')
 def create_meal():
-    # gets the form data from user
-    name = request.form['name']
-    ingredients = request.form['ingredients']
-    # CHANGE
-    # adds user information to database
-    create_meal(name, ingredients)
-    return redirect('/builder')
+    meal_items = session.get('meal_items', [])
+    meal_id = session.get('meal_id')
+
+    if meal_id and meal_items:
+        for item in meal_items:
+            meal_repository.add_food_to_meal(meal_id, item['fdcId'], item['description'])
+        # Clear the temporary food items after creating the meal
+        session.pop('meal_items', None)
+        session.pop('meal_id', None)
+        return redirect(url_for('profile'))
+    else:
+        return redirect(url_for('builder'))
+
+@app.post('/update_meal_name')
+def update_meal_name():
+    meal_id = session.get('meal_id')
+    if not meal_id:
+        return redirect(url_for('builder'))  
+    meal_name = request.form.get('meal_name')
+    meal_repository.update_meal_name(meal_id, meal_name)
+
+    return redirect(url_for('builder'))
+
+@app.route('/builder', methods=['GET', 'POST'])
+def builder():
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login_page'))
+
+    if request.method == 'POST':
+        if 'meal_id' not in session:
+            meal_id = meal_repository.create_meal(user_id)
+            session['meal_id'] = meal_id
+    meal_id = session.get('meal_id')
+    meal_items= meal_repository.get_food(meal_id)
+    food = session.get('meal_items', [])
+    food_count= len(food)
+
+    return render_template('builder.html', meal_items=meal_items, food_count=food_count)
+
+
 
 # Route for editing a existing meal
 @app.post('/meal/<int:meal_id>/edit')
@@ -204,6 +261,8 @@ def delete_meal(meal_id):
     delete_meal(meal_id)
     return redirect('/builder')
 
+# LIST FOR RECENT SEARCHES TO BE DISPLAYED IN INDEX
+
 @app.get('/food/<id>')
 def food(id):
     api_key = os.getenv('API_KEY')
@@ -221,18 +280,51 @@ def food(id):
 
         food_info = [nutrient for nutrient in data["foodNutrients"] 
                      if nutrient["nutrient"]["id"] in nutrient_ids]
+
+        protein_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1003), None)
+        fiber_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1079), None)
+        calorie_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1008), None)
+        carbs_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1005), None)
+        fats_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1004), None)
+
+        protein = protein_info["amount"] if protein_info else 0.0
+        fiber = fiber_info["amount"] if fiber_info else 0.0
+        calorie = calorie_info["amount"] if calorie_info else 0.0
+        carbs = carbs_info["amount"] if carbs_info else 0.0
+        fats = fats_info["amount"] if fats_info else 0.0
+
+        
+        if not any(food['id'] == data["fdcId"] for food in recent_searches):
+            recent_searches.append({
+                "id": data["fdcId"],
+                "name": food_name,
+                "brand": data.get("brandName", None),
+                "protein": protein,
+                "fiber": fiber,
+                "calorie": calorie,
+                "carbs" : carbs,
+                "fats" : fats
+            })
+
+        if len(recent_searches) > 4:
+            recent_searches.pop(0)
+        
         if "brandName" in data and "ingredients" in data:
             food_brand = data["brandName"]
             food_ingredients = data["ingredients"]
             return render_template('food.html', food_info=food_info, food_name=food_name, food_brand=food_brand, food_ingredients=food_ingredients)
+        
         if "brandName" in data:
             food_brand = data["brandName"]
             return render_template('food.html', food_info=food_info, food_name=food_name, food_brand=food_brand)
-        if "ingredients" in data:
+        
+        if "ingredients" in data:   
             food_ingredients = data["ingredients"]
             return render_template('food.html', food_info=food_info, food_name=food_name, food_ingredients=food_ingredients)
+        
         if "brandName" not in data and "ingredients" not in data:
             return render_template('food.html', food_info=food_info, food_name=food_name)
+        
     except requests.exceptions.RequestException as e:
         return jsonify(errMsg = str(e)), 500
 
@@ -254,21 +346,27 @@ def foodsearch():
         return render_template('foodsearch.html', foods=foods)
     except requests.exceptions.RequestException as e:
         return jsonify(errMsg = str(e)), 500
+    
+@app.get('/foodsearch/')
+def searchpage():
+    
+    return render_template('foodsearch.html')
 
 # Route for profile page
 @app.route('/profile')
 def profile():
-    user = session.get('user')
+    user_id = session.get('user_id')
 
-    if user is None:
+    if not user_id:
         return redirect(url_for('login_page'))
     
-    username = session['user']
     # loads default profile picture for the time being
     profile_picture = 'static/images/default-profile-pic.jpg'
     # meals = get_user_meals(user_id)
     # return meals=meals when repo is done
-    return render_template('profile.html', profile_picture=profile_picture, username=username)
+    meals = meal_repository.get_meal(user_id)
+    
+    return render_template('profile.html', profile_picture=profile_picture, meals=meals)
 
 # Big Api Call 
 # USDA FoodData Central 
@@ -278,33 +376,14 @@ def food_list():
     url = f'https://api.nal.usda.gov/fdc/v1/foods/list?api_key={api_key}'
 
     try:
-        # Get request for the API
         response = requests.get(url)
         response.raise_for_status()
-        data = response.json() # store API response in JSON
+        data = response.json() 
         print(data)
         return data
     except requests.exceptions.RequestException as e:
-        # if theres an error with the request, an error message will be returned
         return jsonify(errMsg = str(e)), 500
     
-    
-#Returns Information on a specific food item. 
-#Food's fdcId is a required route parameter
-@app.get('/food/<id>')
-def food_info(id):
-    api_key = os.getenv('API_KEY')
-    url = f'https://api.nal.usda.gov/fdc/v1/food/{id}?api_key={api_key}'
-    
-    try:
-        res = requests.get(url)
-        res.raise_for_status()
-        data = res.json()
-        return jsonify(data=data)
-    except requests.exceptions.RequestException as e:
-        return jsonify(errMsg = str(e)), 500
-    
-
 
 # Starts the Flask application in debug mode
 if __name__ == '__main__':

@@ -1,24 +1,24 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-<div class = "view-food-container">
-    <div class="left-img-container" style = "width: 25%;">
+<div class="view-food-container">
+    <div class="left-img-container" style="width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
-    <div class = "about-us" style = "width: 90%;">
+    <div class="about-us" style="width: 90%;">
         <a onclick="history.back()">
-            <button class = "backbutton" style = "float: left; margin-right: -125px;">Back</button>
+            <button class="backbutton" style="float: left; margin-right: -125px;">Back</button>
         </a>
-        <h1 class = "h1edited">ByteBite Calculator</h1>
+        <h1 class="h1edited">ByteBite Calculator</h1>
         
-        <div class = "calcgrid">
-            <div class = "calcgridform">QTY</div>
-            <div class = "calcgridform" style = "margin-left: -20px;">Name</div>
-            <div class = "calcgridform" style = "margin-left: -35px;">Calories</div>
-            <div class = "calcgridform" style = "margin-left: -115px;">Carbs</div>
-            <div class = "calcgridform" style = "margin-left: -175px;">Fat</div>
+        <div class="calcgrid">
+            <div class="calcgridform">QTY</div>
+            <div class="calcgridform" style="margin-left: -20px;">Name</div>
+            <div class="calcgridform" style="margin-left: -35px;">Calories</div>
+            <div class="calcgridform" style="margin-left: -115px;">Carbs</div>
+            <div class="calcgridform" style="margin-left: -175px;">Fat</div>
         </div>
-        <hr style = "width: 75%; margin-top: 0;">
+        <hr style="width: 75%; margin-top: 0;">
         <div class = "calc-item">
             <div class = "qty">2</div>
             <div class = "calcname">Apple</div>
@@ -37,24 +37,120 @@
             <div class = calc-add-icon><img src="../static/images/bluepencil.jpg" alt="""></div>
             <div class = "calc-remove-icon"><img src="../static/images/trashcan.jpg" alt="""></div>
         </div>
+        
+        <div id="food-list">
+            
+        </div>
         <a href="{{ url_for('foodsearch') }}">
-            <button class = "add-item-button">Add Item +</button>
+            <button class="add-item-button">Add Item +</button>
         </a>
-        <hr style = "width: 75%; margin-top: 100px;">
-        <div class = "total-container">
+        <hr style="width: 75%; margin-top: 100px;">
+        <div class="total-container">
             <strong>Total:</strong>
-            <div class = "total-box">
-                <div class = "calccal-total">218 Cal</div>
-                <div class = "calccarb-total">47 Carbs</div>
-                <div class = "calcfat-total">5g Fat</div>
+            <div class="total-box">
+                <div class="calccal-total">0 Cal</div>
+                <div class="calccarb-total">0 Carbs</div>
+                <div class="calcfat-total">0g Fat</div>
             </div>
         </div>
-        <!-- <h2 style = "text-align: left; margin-left: 125px;">Total:</h2> -->
-        
     </div>
-    <div class="right-img-container" style = "width: 25%;">
+    <div class="right-img-container" style="width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const foodItems = JSON.parse(localStorage.getItem('calculatorFoods')) || [];
+
+        const foodListContainer = document.getElementById('food-list');
+
+        function renderFoodItems() {
+            foodListContainer.innerHTML = '';
+            foodItems.forEach((food, index) => {
+                console.log(food);
+
+                const foodDiv = document.createElement('div');
+                foodDiv.classList.add('calc-item');
+                foodDiv.innerHTML = `
+                    <div class="qty">1</div>
+                    <div class="calcname">${food.name}</div>
+                    <div class="calccal">${food.calories || 0}</div>
+                    <div class="calccarb">${food.carbs || 0} G</div>
+                    <div class="calcfat">${food.fats || 0} G</div>
+                    <div class="calc-add-icon"><img src="../static/images/bluepencil.jpg" alt=""></div>
+                    <div class="calc-remove-icon"><img src="../static/images/trashcan.jpg" alt=""></div>
+                `;
+                foodListContainer.appendChild(foodDiv);
+            });
+
+            attachEventListeners();
+            calculateTotals();
+        }
+
+
+        function calculateTotals() {
+            let totalCalories = 0;
+            let totalCarbs = 0;
+            let totalFat = 0;
+
+            document.querySelectorAll('.calc-item').forEach(item => {
+                const qty = parseInt(item.querySelector('.qty').textContent, 10);
+                const calories = parseInt(item.querySelector('.calccal').textContent, 10);
+                const carbs = parseInt(item.querySelector('.calccarb').textContent, 10);
+                const fat = parseInt(item.querySelector('.calcfat').textContent, 10);
+
+                totalCalories += calories * qty;
+                totalCarbs += carbs * qty;
+                totalFat += fat * qty;
+            });
+
+            document.querySelector('.calccal-total').textContent = `${totalCalories} Cal`;
+            document.querySelector('.calccarb-total').textContent = `${totalCarbs} Carbs`;
+            document.querySelector('.calcfat-total').textContent = `${totalFat}g Fat`;
+            
+        }
+
+        calculateTotals();
+        renderFoodItems();
+
+        
+
+        function attachEventListeners() {
+            const removeIcons = document.querySelectorAll('.calc-remove-icon');
+            removeIcons.forEach(function(removeIcon) {
+                removeIcon.addEventListener('click', function() {
+                    const calcItem = this.closest('.calc-item');
+                    const qtyElement = calcItem.querySelector('.qty');
+                    if (qtyElement) {
+                        let qty = parseInt(qtyElement.textContent, 10);
+                        if (qty > 1) {
+                            qtyElement.textContent = qty - 1;
+                        } else {
+                            calcItem.remove();
+                        }
+                    }
+                    calculateTotals();
+                });
+            });
+
+            const addIcons = document.querySelectorAll('.calc-add-icon');
+            addIcons.forEach(function(addIcon) {
+                addIcon.addEventListener('click', function() {
+                    const calcItem = this.closest('.calc-item');
+                    const qtyElement = calcItem.querySelector('.qty');
+                    if (qtyElement) {
+                        let currentQty = parseInt(qtyElement.textContent, 10);
+                        qtyElement.textContent = currentQty + 1;
+                        calculateTotals();
+                    }
+                });
+            });
+        }
+
+        //localStorage.removeItem('calculatorFoods');
+    });
+</script>
+
 
 {% endblock %}

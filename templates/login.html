@@ -10,7 +10,7 @@
 <body>
     <div class="login-container">
         <div class="img-container-1">
-            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/food-background.jpg') }}" alt=""></a>
+            <img src="{{ url_for('static', filename='images/food-background.jpg') }}" alt="">
         </div>
         <div class="form-container">
             <div class="header">
@@ -23,7 +23,7 @@
             </div>
             <div class="form-grid">
                 <div class="logo-signin">
-                    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo">
+                    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo"></a>
                 </div>
                 
                 <form action="{{ url_for('login') }}" method="POST" class="form-box active">
