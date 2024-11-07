@@ -22,10 +22,13 @@ app.secret_key = appConfig["FLASK SECRET"]
 email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$'
 
+recent_searches = []
+
 # Page Routes
 @app.get('/')
 def index():
-    return render_template('index.html')
+    recent = recent_searches
+    return render_template('index.html', recent=recent)
 
 @app.get('/about')
 def about_page():
@@ -140,6 +143,8 @@ def delete_meal(meal_id):
     delete_meal(meal_id)
     return redirect('/builder')
 
+# LIST FOR RECENT SEARCHES TO BE DISPLAYED IN INDEX
+
 @app.get('/food/<id>')
 def food(id):
     api_key = os.getenv('API_KEY')
@@ -157,18 +162,51 @@ def food(id):
 
         food_info = [nutrient for nutrient in data["foodNutrients"] 
                      if nutrient["nutrient"]["id"] in nutrient_ids]
+
+        protein_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1003), None)
+        fiber_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1079), None)
+        calorie_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1008), None)
+        carbs_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1005), None)
+        fats_info = next((nutrient for nutrient in food_info if nutrient["nutrient"]["id"] == 1004), None)
+
+        protein = protein_info["amount"] if protein_info else 0.0
+        fiber = fiber_info["amount"] if fiber_info else 0.0
+        calorie = calorie_info["amount"] if calorie_info else 0.0
+        carbs = carbs_info["amount"] if carbs_info else 0.0
+        fats = fats_info["amount"] if fats_info else 0.0
+
+        
+        if not any(food['id'] == data["fdcId"] for food in recent_searches):
+            recent_searches.append({
+                "id": data["fdcId"],
+                "name": food_name,
+                "brand": data.get("brandName", None),
+                "protein": protein,
+                "fiber": fiber,
+                "calorie": calorie,
+                "carbs" : carbs,
+                "fats" : fats
+            })
+
+        if len(recent_searches) > 4:
+            recent_searches.pop(0)
+        
         if "brandName" in data and "ingredients" in data:
             food_brand = data["brandName"]
             food_ingredients = data["ingredients"]
             return render_template('food.html', food_info=food_info, food_name=food_name, food_brand=food_brand, food_ingredients=food_ingredients)
+        
         if "brandName" in data:
             food_brand = data["brandName"]
             return render_template('food.html', food_info=food_info, food_name=food_name, food_brand=food_brand)
-        if "ingredients" in data:
+        
+        if "ingredients" in data:   
             food_ingredients = data["ingredients"]
             return render_template('food.html', food_info=food_info, food_name=food_name, food_ingredients=food_ingredients)
+        
         if "brandName" not in data and "ingredients" not in data:
             return render_template('food.html', food_info=food_info, food_name=food_name)
+        
     except requests.exceptions.RequestException as e:
         return jsonify(errMsg = str(e)), 500
 
@@ -209,33 +247,14 @@ def food_list():
     url = f'https://api.nal.usda.gov/fdc/v1/foods/list?api_key={api_key}'
 
     try:
-        # Get request for the API
         response = requests.get(url)
         response.raise_for_status()
-        data = response.json() # store API response in JSON
+        data = response.json() 
         print(data)
         return data
     except requests.exceptions.RequestException as e:
-        # if theres an error with the request, an error message will be returned
         return jsonify(errMsg = str(e)), 500
     
-    
-#Returns Information on a specific food item. 
-#Food's fdcId is a required route parameter
-@app.get('/food/<id>')
-def food_info(id):
-    api_key = os.getenv('API_KEY')
-    url = f'https://api.nal.usda.gov/fdc/v1/food/{id}?api_key={api_key}'
-    
-    try:
-        res = requests.get(url)
-        res.raise_for_status()
-        data = res.json()
-        return jsonify(data=data)
-    except requests.exceptions.RequestException as e:
-        return jsonify(errMsg = str(e)), 500
-    
-
 
 # Starts the Flask application in debug mode
 if __name__ == '__main__':
