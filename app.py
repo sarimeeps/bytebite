@@ -291,12 +291,16 @@ def searchpage():
 # Route for profile page
 @app.route('/profile')
 def profile():
-    # user = 
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login_page'))
     # loads default profile picture for the time being
     profile_picture = 'static/images/default-profile-pic.jpg'
     # meals = get_user_meals(user_id)
     # return meals=meals when repo is done
-    return render_template('profile.html', profile_picture=profile_picture)
+    meals = meal_repository.get_meal(user_id)
+    
+    return render_template('profile.html', profile_picture=profile_picture, meals=meals)
 
 # Big Api Call 
 # USDA FoodData Central 

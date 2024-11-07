@@ -17,6 +17,9 @@
         </div>
         <h1 style = 'font-weight: normal;'>{{session['user']}}</h1>  
         <h2 style = 'font-weight: normal; text-align: left;'>My Meals</h2>
+        {% for meal in meals %}
+            <li>{{ meal[0] }}</li>
+        {% endfor %}
     </div>
 
     <div class="right-img-container" style = "width: 20%;">
