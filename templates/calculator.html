@@ -37,6 +37,7 @@
             <div class = calc-add-icon><img src="../static/images/bluepencil.jpg" alt="""></div>
             <div class = "calc-remove-icon"><img src="../static/images/trashcan.jpg" alt="""></div>
         </div>
+        
         <div id="food-list">
             
         </div>
@@ -62,28 +63,27 @@
     document.addEventListener("DOMContentLoaded", function() {
         const foodItems = JSON.parse(localStorage.getItem('calculatorFoods')) || [];
 
-        // Reference to the food list container
         const foodListContainer = document.getElementById('food-list');
 
-        // Function to render food items in the container
         function renderFoodItems() {
             foodListContainer.innerHTML = '';
             foodItems.forEach((food, index) => {
+                console.log(food);
+
                 const foodDiv = document.createElement('div');
                 foodDiv.classList.add('calc-item');
                 foodDiv.innerHTML = `
                     <div class="qty">1</div>
                     <div class="calcname">${food.name}</div>
                     <div class="calccal">${food.calories || 0}</div>
-                    <div class="calccarb">${food.carbohydrates || 0} G</div>
-                    <div class="calcfat">${food.fat || 0} G</div>
+                    <div class="calccarb">${food.carbs || 0} G</div>
+                    <div class="calcfat">${food.fats || 0} G</div>
                     <div class="calc-add-icon"><img src="../static/images/bluepencil.jpg" alt=""></div>
                     <div class="calc-remove-icon"><img src="../static/images/trashcan.jpg" alt=""></div>
                 `;
                 foodListContainer.appendChild(foodDiv);
             });
 
-            // Attach event listeners
             attachEventListeners();
             calculateTotals();
         }
@@ -111,7 +111,6 @@
             
         }
 
-        // Initial calculation
         calculateTotals();
         renderFoodItems();
 
