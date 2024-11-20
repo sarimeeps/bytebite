@@ -94,11 +94,19 @@ def googleCallback():
     print(token)
 
     user = user_repository.get_user_by_email(email)
+    print(user)
 
     if user is None:
-        return redirect(url_for('signup_auth'))
+        local_part = email.split('@')[0]
+        random_number = ''.join(random.choices(string.digits, k=5))
+        username = f"{local_part}@{random_number}"
 
-    session['user'] = token
+        user_repository.create_oauth_user(username, email)
+
+        session['user'] = username
+
+    if session['user'] != username:
+        session['user'] = username
 
     return redirect(url_for('profile'))
 
@@ -142,24 +150,6 @@ def register_user():
     user_repository.create_user(email, username, hashed_password)
 
     return redirect(url_for('login_page'))
-
-@app.get('/signup-auth')
-def signup_auth():
-    return render_template("profile.html")
-
-@app.post('/signup-auth')
-def signup_auth_post():
-    email = session['email']
-
-    domain_part = email.split('@')[1]
-    random_number = ''.join(random.choices(string.digits, k=5))
-    username = f"{domain_part.split('.')[0]}{random_number}"
-
-    user_repository.create_oauth_user(username, email)
-
-    session['user'] = username
-
-    return redirect(url_for('profile'))
 
 @app.route('/logout')
 def logout():
