@@ -66,7 +66,7 @@ def test_login_user_success(client, mocker):
 def test_login_failure(client):
     user_repository.get_user_by_username.return_value = None
     response = client.post('/login', data={'username': 'nonexistent', 'password': 'Invalid'})
-    assert response.status_code == 200  # Stay on login page
+    assert response.status_code == 200
     assert b"User does not exist." in response.data
 
 def test_register_user_email_exists(client):
