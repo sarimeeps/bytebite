@@ -23,7 +23,12 @@
         </div>
         <div class="nav-right">
             <div class="nav-right-container">
-                <a href="{{ url_for('about_page') }}">About Us</a>
+                <a href="{{ url_for('calculator') }}">Calculator</a>
+                <form action="{{ url_for('builder') }}" method="POST" id="builder-form" style="display: none;">
+                    <button type="submit">Submit</button> 
+                </form>
+                <a href="javascript:void(0);" onclick="document.getElementById('builder-form').submit(); return false;">Builder</a>
+
                 <form action="/foodsearch/" method="POST">
                     <input type="text" class="txt-box" name="query" placeholder="Search...">
                     <label for="query"></label>
@@ -47,7 +52,10 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 ByteBite</p>
+        <div class="footer-container">
+            <p>&copy; 2024 ByteBite</p>
+            <a href="{{ url_for('about_page') }}">About Us</a>
+        </div>
     </footer>
 </body>
 

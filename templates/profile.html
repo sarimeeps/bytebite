@@ -3,11 +3,11 @@
 {% block content %}
 {% if session['user'] %}
 <div class = "view-food-container">
-    <div class="left-img-container" style = "width: 20%;">
+    <div class="left-img-container" style = "width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
 
-    <div class = "profile" style = "width: 50%;">
+    <div class = "about-us" style = "width: 90%;">
         <title>Profile</title>
         <a onclick="history.back()">
             <button class = "backbutton" style = "float: left; margin-right: -125px;">Back</button>
@@ -15,27 +15,27 @@
         <div class="media">
             <img class="rounded-circle" src="{{ profile_picture }}" width="150" height="150">
         </div>
-        <h1 style = 'font-weight: normal;'>{{session['user']}}</h1>  
-        <h2 style = 'font-weight: normal; text-align: left;'>My Meals</h2>
-        <table id="search-titles" style="width: 100%; border-collapse: collapse;">
-            <tbody>
-                {% for meal in meals %}
-                <tr>
-                    <td>
-                        <a href="{{ url_for('builder', meal_id=meal.meal_id) }}"> {{ meal.meal_name }}</a>
-                    </td>
-                    <td>
-                        <form action="/meal/{{ meal.meal_id }}/delete" method="POST" style="display: inline;">
-                            <button type="submit" class = "backbutton" style="border: none; color: red; cursor: pointer;">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <h1 style = 'font-weight: normal;'>{{session['user']}}</h1> 
+        <div class="meal-flex">
+            <div class="meal-container">
+                <h2 style = 'font-weight: bold; text-align: left; font-size: 28px;'>My Meals</h2>
+                    <div class="meal-grid">
+                        {% for meal in meals %}
+                        <div class="meal-card">
+                                <a href="{{ url_for('builder', meal_id=meal.meal_id) }}" style="font-size: 20px;"> View Meal</a>
+                                <p style="font-size: 17px;">{{ meal.meal_name }}</p>
+                                <form action="/meal/{{ meal.meal_id }}/delete" method="POST" style="display: inline;">
+                                    <button type="submit" class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+                                </form>   
+                        </div>
+                        {% endfor %}
+                    </div>
+            </div> 
+        </div>
     </div>
 
-    <div class="right-img-container" style = "width: 20%;">
+
+    <div class="right-img-container" style = "width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
 </div>
