@@ -91,14 +91,20 @@ def googleCallback():
     
     session['email'] = email
 
-    print(token)
-
     user = user_repository.get_user_by_email(email)
 
     if user is None:
-        return redirect(url_for('signup_auth'))
+        local_part = email.split('@')[0]
+        random_number = ''.join(random.choices(string.digits, k=5))
+        username = f"{local_part}@{random_number}"
 
-    session['user'] = token
+        user_repository.create_oauth_user(username, email)
+
+        session['user'] = username
+
+    if user:
+        username = user['username']
+        session['user'] = username
 
     return redirect(url_for('profile'))
 
@@ -142,24 +148,6 @@ def register_user():
     user_repository.create_user(email, username, hashed_password)
 
     return redirect(url_for('login_page'))
-
-@app.get('/signup-auth')
-def signup_auth():
-    return render_template("profile.html")
-
-@app.post('/signup-auth')
-def signup_auth_post():
-    email = session['email']
-
-    domain_part = email.split('@')[1]
-    random_number = ''.join(random.choices(string.digits, k=5))
-    username = f"{domain_part.split('.')[0]}{random_number}"
-
-    user_repository.create_oauth_user(username, email)
-
-    session['user'] = username
-
-    return redirect(url_for('profile'))
 
 @app.route('/logout')
 def logout():
@@ -349,20 +337,46 @@ def food(id):
 # FUNCTION FOR SEARCHING A FOOD ITEM
 @app.post('/foodsearch/')
 def foodsearch():
- 
     query = request.form.get("query")
-
     api_key = os.getenv('API_KEY')
     url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}&pageSize={10}'
-    print(query)
+
+    # Define the nutrient IDs of interest
+    nutrient_ids = {
+        1003: "protein",
+        1004: "fats",
+        1005: "carbs",
+        1008: "calories"
+    }
+
     try:
         res = requests.get(url)
         res.raise_for_status()
         data = res.json()
-        foods = data["foods"]
+        foods = []
+
+        # Process each food result
+        for food in data["foods"]:
+            food_info = {"id": food["fdcId"], "description": food["description"]}
+            
+            # Extract nutrient information
+            nutrients = {nutrient["nutrientId"]: nutrient["value"] 
+                         for nutrient in food.get("foodNutrients", [])
+                         if nutrient["nutrientId"] in nutrient_ids}
+
+            # Map extracted nutrients to their labels
+            for nutrient_id, nutrient_name in nutrient_ids.items():
+                food_info[nutrient_name] = nutrients.get(nutrient_id, 0.0)  # Default to 0.0 if missing
+            
+            # Include optional fields like brand if present
+            food_info["brand"] = food.get("brandOwner", "Unknown")
+            foods.append(food_info)
+        
         return render_template('foodsearch.html', foods=foods)
+
     except requests.exceptions.RequestException as e:
-        return jsonify(errMsg = str(e)), 500
+        return jsonify(errMsg=str(e)), 500
+
     
 @app.get('/foodsearch/')
 def searchpage():

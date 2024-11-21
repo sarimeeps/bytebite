@@ -768,13 +768,13 @@ button, input[type="submit"] {
 }
 
 .qty{
-    width: 100px;
+    width: 50px;
     font-size: large;
     color: black;
     text-align: center;
     padding-top: 15px;
-    background-color: #d6f6d5;
     height: 35px;
+    background-color: #d6f6d5;
 }
 
 .calcname{
@@ -806,7 +806,7 @@ button, input[type="submit"] {
     margin-left: -47px;
 }
 
-.calcfat{
+.calcpro{
     font-size: large;
     color: black;
     text-align: center;
@@ -817,25 +817,38 @@ button, input[type="submit"] {
     height: 35px;
 }
 
+.calcfat{
+    font-size: large;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+    width: 60px;
+    /* margin-left: -47px; */
+}
+
 .calc-add-icon{
     font-size: large;
     color: black;
     text-align: center;
-    padding-top: 3px;
+    padding-top: 15px;
+    background-color: #d6f6d5;
+    margin-left: -30px;
 }
 
 .calc-remove-icon{
     font-size: large;
     color: black;
     text-align: center;
-    padding-top: 5px;
+    padding-top: 15px;
+    background-color: #d6f6d5;
+    padding-left: 5px;
 }
 
 .calcgrid{
     width: 70%;
     height: 50px;
     display: grid;
-    grid-template-columns: auto auto auto auto auto;
+    grid-template-columns: auto auto auto auto auto auto;
     margin-left: 100px;
     align-items: baseline;
 }
@@ -855,7 +868,7 @@ button, input[type="submit"] {
     margin-left: 125px;
     margin-top: 25px;
     display: grid;
-    grid-template-areas: 'qty calcname calccal calccarb calcfat calc-add-icon calc-remove-icon';
+    grid-template-areas: 'qty calcname calccal calccarb calcpro calcfat calc-add-icon calc-remove-icon';
     grid-column-gap: 0px;
 }
 
@@ -869,13 +882,13 @@ button, input[type="submit"] {
 }
 
 .total-box{
-    width: 22%;
+    width: 32%;
     height: 50px;
     border-radius: 5px;
     outline: solid 2px black;
     background-color: white;
     display: grid;
-    grid-template-areas: 'calccal-total calccarb-total calcfat-total';
+    grid-template-areas: 'calccal-total calccarb-total calcpro-total calcfat-total';
     position: absolute;
     left: 40%;
 }
@@ -899,15 +912,23 @@ button, input[type="submit"] {
     width: 125px;
 }
 
+.calcpro-total{
+    font-size: large;
+    color: black;
+    text-align: center;
+    padding-top: 15px;
+    width: 125px;
+    background-color: #d6f6d5;
+    height: 35px;
+    border-radius: 5px;
+}
+
 .calcfat-total{
     font-size: large;
     color: black;
     text-align: center;
     padding-top: 15px;
-    width: 100px;
-    background-color: #d6f6d5;
-    height: 35px;
-    border-radius: 5px;
+    width: 125px;
 }
 
 .total-container{

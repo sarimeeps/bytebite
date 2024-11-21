@@ -11,32 +11,35 @@
         </a>
         <h1 class="h1edited">ByteBite Calculator</h1>
         
-        <div class="calcgrid">
-            <div class="calcgridform">QTY</div>
-            <div class="calcgridform" style="margin-left: -20px;">Name</div>
-            <div class="calcgridform" style="margin-left: -35px;">Calories</div>
-            <div class="calcgridform" style="margin-left: -115px;">Carbs</div>
-            <div class="calcgridform" style="margin-left: -175px;">Fat</div>
+        <div class="calcgrid" style = "margin-left: 125px;">
+            <div class="calcgridform">Name</div>
+            <div class="calcgridform" style="margin-left: -10px;">Calories</div>
+            <div class="calcgridform" style="margin-left: -60px;">Carbs</div>
+            <div class="calcgridform" style="margin-left: -50px;">Protein</div>
+            <div class="calcgridform" style="margin-left: -25px;">Fat</div>
+            <div class="calcgridform" style="margin-left: 0px;">QTY</div>
         </div>
         <hr style="width: 75%; margin-top: 0;">
-        <div class = "calc-item">
-            <div class = "qty">2</div>
+        <!-- <div class = "calc-item">
             <div class = "calcname">Apple</div>
             <div class = "calccal">160</div>
             <div class = "calccarb">44 G</div>
+            <div class = "calcpro">0 G</div>
             <div class = "calcfat">0 G</div>
-            <div class = calc-add-icon><img src="../static/images/bluepencil.jpg" alt="""></div>
-            <div class = "calc-remove-icon"><img src="../static/images/trashcan.jpg" alt="""></div>
+            <div class = "calc-remove-icon">-</div>
+            <div class = "qty">2</div>
+            <div class = calc-add-icon>+</div>
         </div>
         <div class = "calc-item">
-            <div class = "qty">1</div>
             <div class = "calcname">Avocado</div>
             <div class = "calccal">58</div>
             <div class = "calccarb">3 G</div>
+            <div class = "calcpro">2 G</div>
             <div class = "calcfat">5 G</div>
-            <div class = calc-add-icon><img src="../static/images/bluepencil.jpg" alt="""></div>
-            <div class = "calc-remove-icon"><img src="../static/images/trashcan.jpg" alt="""></div>
-        </div>
+            <div class = "calc-remove-icon">-</div>
+            <div class = "qty">1</div>
+            <div class = calc-add-icon>+</div>
+        </div> -->
         
         <div id="food-list">
             
@@ -50,6 +53,7 @@
             <div class="total-box">
                 <div class="calccal-total">0 Cal</div>
                 <div class="calccarb-total">0 Carbs</div>
+                <div class="calcpro-total">0g Protein</div>
                 <div class="calcfat-total">0g Fat</div>
             </div>
         </div>
@@ -73,13 +77,14 @@
                 const foodDiv = document.createElement('div');
                 foodDiv.classList.add('calc-item');
                 foodDiv.innerHTML = `
-                    <div class="qty">1</div>
                     <div class="calcname">${food.name}</div>
                     <div class="calccal">${food.calories || 0}</div>
                     <div class="calccarb">${food.carbs || 0} G</div>
+                    <div class="calcpro">${food.protein || 0} G</div>
                     <div class="calcfat">${food.fats || 0} G</div>
-                    <div class="calc-add-icon"><img src="../static/images/bluepencil.jpg" alt=""></div>
-                    <div class="calc-remove-icon"><img src="../static/images/trashcan.jpg" alt=""></div>
+                    <div class="calc-remove-icon">-</div>
+                    <div class="qty">1</div>
+                    <div class="calc-add-icon">+</div>
                 `;
                 foodListContainer.appendChild(foodDiv);
             });
@@ -92,21 +97,25 @@
         function calculateTotals() {
             let totalCalories = 0;
             let totalCarbs = 0;
+            let totalProtein = 0;
             let totalFat = 0;
 
             document.querySelectorAll('.calc-item').forEach(item => {
                 const qty = parseInt(item.querySelector('.qty').textContent, 10);
                 const calories = parseInt(item.querySelector('.calccal').textContent, 10);
                 const carbs = parseInt(item.querySelector('.calccarb').textContent, 10);
+                const protein = parseInt(item.querySelector('.calcpro').textContent, 10);
                 const fat = parseInt(item.querySelector('.calcfat').textContent, 10);
 
                 totalCalories += calories * qty;
                 totalCarbs += carbs * qty;
+                totalProtein += protein * qty;
                 totalFat += fat * qty;
             });
 
             document.querySelector('.calccal-total').textContent = `${totalCalories} Cal`;
             document.querySelector('.calccarb-total').textContent = `${totalCarbs} Carbs`;
+            document.querySelector('.calcpro-total').textContent = `${totalProtein}g Protein`;
             document.querySelector('.calcfat-total').textContent = `${totalFat}g Fat`;
             
         }
@@ -128,6 +137,7 @@
                             qtyElement.textContent = qty - 1;
                         } else {
                             calcItem.remove();
+                            localStorage.removeItem('calculatorFoods');
                         }
                     }
                     calculateTotals();
@@ -147,8 +157,6 @@
                 });
             });
         }
-
-        //localStorage.removeItem('calculatorFoods');
     });
 </script>
 
