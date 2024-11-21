@@ -2,65 +2,68 @@
 
 {% block content %}
 <div class = "view-food-container">
-    <div class="left-img-container" style = "width: 20%;">
+    <div class="left-img-container" style = "width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
 
-    <div class="builder">
-        <div class="back-button" style="float: left; margin-top: 15px;">
-            <button type="button" onclick="window.history.back();">←Back</button>
-            </div>
-    <h1 style="text-align: center;font-weight: normal;">Meal Builder</h1>
-        <form action="/update_meal_name" method="POST" style="text-align: center;">
-            <div class="meal_name">
-            <label for="meal_name" style="color: #FFCA57;">Meal Name: {{meal_name}}</label><br>
-            </div>
-            <div class="meal_name">
-            <input type="text" id="meal_name" name="meal_name" placeholder="Enter Name..." style="width: 500px; padding: 5px;"><br><br>
-            </div>
-            <input type="submit" value="Update Meal Name" style="padding: 10px 20px; background-color: #FFCA57; color: white; text-decoration: none; border-radius: 5px;">
-            </form>
-            <ul>
-                {% if meal_items %}
-                <label for="meal_name" style="color: #FFCA57;">Existing Ingredients:</label><br>
-                <ul>
-                    {% for food in meal_items %}
-                        <li>{{ food[1] }}</li>
-                            <form action="{{ url_for('delete_food_from_db', meal_id=session.meal_id, food_id=food[0]) }}" method="POST" style="display: inline;">
-                                <button class="backbutton" type="submit" style="border: none; color: red; cursor: pointer;">Delete</button>
-                            </form>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <label>No Current Ingredients</label><br>
-                {% endif %}
-            {% if session.get('meal_items', []) %}
-                <label for="meal_name" style="color: #FFCA57;">New Ingredients:</label><br>
+    <div class="about-us" style="width: 90%;">
+        <a onclick="history.back()">
+            <button class="backbutton" style="float: left; margin-right: -125px;">Back</button>
+        </a>
+        <div class="build-container">
+            <h1 class="h1edited">Meal Builder</h1>
+
+            <form action="/update_meal_name" method="POST" style="text-align: center;">
+                <div class="meal_name">
+                <label for="meal_name" style="color: #FFCA57;">Meal Name: {{meal_name}}</label><br>
+                </div>
+                <div class="meal_name">
+                <input type="text" id="meal_name" name="meal_name" placeholder="Enter Name..." style="width: 500px; padding: 5px;"><br><br>
+                </div>
+                <input type="submit" value="Update Meal Name" style="padding: 10px 20px; background-color: #FFCA57; color: white; text-decoration: none; border-radius: 5px;">
+                </form>
+                <ul class="build-list">
+                    {% if meal_items %}
+                    <label for="meal_name" style="color: #FFCA57;">Existing Ingredients:</label><br>
                     <ul>
-                    {% for item in session.get('meal_items', []) %}
-                    <li>{{ item.description }}</li>
-                        <form action="{{ url_for('delete_food_from_session', meal_id=session.meal_id, fdcId=item.fdcId) }}" method="POST" style="display: inline;">
-                            <button class = "backbutton" type="submit" style="border: none; color: red; cursor: pointer;">Delete</button>
-                        </form>
-                    {% endfor %}
+                        {% for food in meal_items %}
+                            <li>{{ food[1] }}<form action="{{ url_for('delete_food_from_db', meal_id=session.meal_id, food_id=food[0]) }}" method="POST" style="display: inline;">
+                                <button type="submit" class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+                                    </form></li>
+                                
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <label>No Current Ingredients</label><br>
+                    {% endif %}
+                {% if session.get('meal_items', []) %}
+                    <label for="meal_name" style="color: #FFCA57;">New Ingredients:</label><br>
+                        <ul>
+                        {% for item in session.get('meal_items', []) %}
+                        <li>{{ item.description }}<form action="{{ url_for('delete_food_from_session', meal_id=session.meal_id, fdcId=item.fdcId) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+                        </form></li>
+                            
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 </ul>
-            {% endif %}
-            </ul>
-            <div class="add-item">
-                <form action="/foodmeal" method="POST" style="display:inline;">
-                    <input type="submit" value="Add Item +" style="padding: 10px 20px; color: white; text-decoration: none; border-radius: 5px;">
+                <div class="add-item">
+                    <form action="/foodmeal" method="POST" style="display:inline;">
+                        <input type="submit" class="add-item-button" value="Add Item +">
+                    </form>
+                </div>
+            <hr style="height: 2px;background-color: white;">
+            <div class="create-meal" style="float: right;">
+                <form action="/create_meal" method="POST">
+                    <input type="submit" value="Create Meal">
                 </form>
             </div>
-        <hr style="height: 2px;background-color: white;">
-        <div class="create-meal" style="float: right;">
-            <form action="/create_meal" method="POST">
-                <input type="submit" value="Create Meal">
-            </form>
+            <h2 style="text-align: left; font-weight: normal;">Items in meal: {{ food_count }}</h2>
         </div>
-        <h2 style="text-align: left; font-weight: normal;">Items in meal: {{ food_count }}</h2>
     </div>
 
-    <div class="right-img-container" style = "width: 20%;">
+    <div class="right-img-container" style = "width: 25%;">
         <img src="/static/images/food-background.jpg" alt="food-background">
     </div>
 </div>
