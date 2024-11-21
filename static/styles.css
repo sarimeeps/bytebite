@@ -135,8 +135,8 @@ footer {
     text-align: center;
     color: white;
     margin-top: 20px;
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-left: auto;
+    margin-right:auto;
 }
 .rounded-circle{
     border-radius: 50%;
@@ -161,12 +161,13 @@ footer {
     margin-top: 10px;
 }
 .add-item{
-    margin-top: 300px;
+    margin-top: auto;
     margin-bottom: 20px;
     border: 3px solid white;
     cursor: pointer; 
     padding: 10px;
     border-radius: 5px;
+    text-align: center;
 }
 
 

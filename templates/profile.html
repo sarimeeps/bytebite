@@ -17,9 +17,22 @@
         </div>
         <h1 style = 'font-weight: normal;'>{{session['user']}}</h1>  
         <h2 style = 'font-weight: normal; text-align: left;'>My Meals</h2>
-        {% for meal in meals %}
-            <li>{{ meal[0] }}</li>
-        {% endfor %}
+        <table id="search-titles" style="width: 100%; border-collapse: collapse;">
+            <tbody>
+                {% for meal in meals %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('builder', meal_id=meal.meal_id) }}"> {{ meal.meal_name }}</a>
+                    </td>
+                    <td>
+                        <form action="/meal/{{ meal.meal_id }}/delete" method="POST" style="display: inline;">
+                            <button type="submit" class = "backbutton" style="border: none; color: red; cursor: pointer;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <div class="right-img-container" style = "width: 20%;">
