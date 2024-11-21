@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 import os, re
-import requests
+import requests, random, string
+from authlib.integrations.flask_client import OAuth
 from flask_bcrypt import Bcrypt
 from repositories import user_repository, meal_repository
 from dotenv import load_dotenv
@@ -13,11 +14,25 @@ app = Flask(__name__)
 
 bcrypt = Bcrypt(app)
 
-appConfig = {
-    "FLASK SECRET": os.getenv('SECRET_KEY')
+appConf = {
+    "FLASK_SECRET": os.getenv('SECRET_KEY'),
+    "FLASK_PORT": 5000,
+    "OAUTH2_CLIENT_ID": os.getenv('OAUTH2_CLIENT_ID'),
+    "OAUTH2_CLIENT_SECRET": os.getenv('OAUTH2_CLIENT_SECRET'),
+    "OAUTH_META_URL": "https://accounts.google.com/.well-known/openid-configuration"
 }
 
-app.secret_key = appConfig["FLASK SECRET"]
+app.secret_key = appConf["FLASK_SECRET"]
+
+oauth = OAuth(app)
+
+oauth.register("myApp", 
+               client_id = appConf['OAUTH2_CLIENT_ID'],
+               client_secret = appConf['OAUTH2_CLIENT_SECRET'],
+               server_metadata_url = appConf['OAUTH_META_URL'],
+               client_kwargs = {
+                   "scope": "openid profile email"
+               })
 
 email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$'
@@ -61,6 +76,40 @@ def login():
     session['user_id'] = user['user_id']
     return redirect(url_for('index'))
 
+@app.get('/google-login')
+def googleLogin():
+    return oauth.myApp.authorize_redirect(redirect_uri=url_for("googleCallback", _external=True))
+
+@app.get('/signin-google')
+def googleCallback():
+    token = oauth.myApp.authorize_access_token()
+    email = token['userinfo']['email']
+
+    if not re.match(email_regex, email):
+        error = "Please use a valid email address."
+        return render_template('login.html', error=error)
+    
+    session['email'] = email
+
+    print(token)
+
+    user = user_repository.get_user_by_email(email)
+    print(user)
+
+    if user is None:
+        local_part = email.split('@')[0]
+        random_number = ''.join(random.choices(string.digits, k=5))
+        username = f"{local_part}@{random_number}"
+
+        user_repository.create_oauth_user(username, email)
+
+        session['user'] = username
+
+    if session['user'] != username:
+        session['user'] = username
+
+    return redirect(url_for('profile'))
+
 @app.get('/register')
 def register_page():
     return render_template('register.html')
@@ -101,6 +150,11 @@ def register_user():
     user_repository.create_user(email, username, hashed_password)
 
     return redirect(url_for('login_page'))
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
 
 @app.get('/calculator')
 def calculator():
@@ -318,8 +372,10 @@ def searchpage():
 @app.route('/profile')
 def profile():
     user_id = session.get('user_id')
+
     if not user_id:
         return redirect(url_for('login_page'))
+    
     # loads default profile picture for the time being
     profile_picture = 'static/images/default-profile-pic.jpg'
     # meals = get_user_meals(user_id)

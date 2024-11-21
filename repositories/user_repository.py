@@ -41,7 +41,7 @@ def create_oauth_user(username: str, email: str):
         with conn.cursor() as cur:
             cur.execute('''
                         INSERT INTO users (email, username)
-                        VALUES (%s, %s, %s, %s, %s)
+                        VALUES (%s, %s)
                         RETURNING user_id
                         ''', [email, username]
                         )
