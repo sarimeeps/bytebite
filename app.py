@@ -93,7 +93,6 @@ def googleCallback():
 
     user = user_repository.get_user_by_email(email)
     username = user['username']
-    print(username)
 
     if user is None:
         local_part = email.split('@')[0]
@@ -105,7 +104,6 @@ def googleCallback():
         session['user'] = username
 
     if user:
-
         session['user'] = username
 
     return redirect(url_for('profile'))
