@@ -190,10 +190,11 @@ def add_to_meal():
 def create_meal():
     meal_items = session.get('meal_items', [])
     meal_id = session.get('meal_id')
-
-    if meal_id and meal_items:
-        for item in meal_items:
-            meal_repository.add_food_to_meal(meal_id, item['fdcId'], item['description'])
+    
+    if meal_id:
+        if meal_items:
+            for item in meal_items:
+                meal_repository.add_food_to_meal(meal_id, item['fdcId'], item['description'])
         # Clear the temporary food items after creating the meal
         session.pop('meal_items', None)
         session.pop('meal_id', None)
@@ -216,19 +217,37 @@ def builder():
     user_id = session.get('user_id')
     if not user_id:
         return redirect(url_for('login_page'))
+    
+    if request.method == 'POST' and not request.args.get('meal_id'):
+        session.pop('meal_id', None)
+        session.pop('meal_items', None)
 
+    meal_id = request.args.get('meal_id') or session.get('meal_id')
+    if meal_id:
+        session['meal_id'] = meal_id
     if request.method == 'POST':
         if 'meal_id' not in session:
             meal_id = meal_repository.create_meal(user_id)
             session['meal_id'] = meal_id
-    meal_id = session.get('meal_id')
+
+    meal_name = meal_repository.get_meal_name(meal_id)
     meal_items= meal_repository.get_food(meal_id)
     food = session.get('meal_items', [])
-    food_count= len(food)
+    food_count = len(food) + len(meal_items)
+    return render_template('builder.html', meal_name=meal_name, meal_items=meal_items, food_count=food_count)
 
-    return render_template('builder.html', meal_items=meal_items, food_count=food_count)
+@app.post('/meal/<int:meal_id>/food/<string:fdcId>/session-delete')
+def delete_food_from_session(meal_id, fdcId):
+    meal_items = session.get('meal_items', [])
+    updated_items = [item for item in meal_items if item['fdcId'] != fdcId]
+    session['meal_items'] = updated_items
+    
+    return redirect(url_for('builder', meal_id=meal_id))
 
-
+@app.post('/meal/<int:meal_id>/food/<int:food_id>/delete-db')
+def delete_food_from_db(meal_id, food_id):
+    meal_repository.delete_food(meal_id, food_id)
+    return redirect(url_for('builder', meal_id=meal_id))
 
 # Route for editing a existing meal
 @app.post('/meal/<int:meal_id>/edit')
@@ -236,7 +255,6 @@ def edit_meal(meal_id):
     # gets the form data from user
     name = request.form['name']
     ingredients = request.form['ingredients']
-    # CHANGE
     # edits the current meal in database
     edit_meal(meal_id, name, ingredients)
     return redirect('/builder')
@@ -244,10 +262,9 @@ def edit_meal(meal_id):
 # route for meal deletion
 @app.post('/meal/<int:meal_id>/delete')
 def delete_meal(meal_id):
-# CHANGE
     # deletes existing meal
-    delete_meal(meal_id)
-    return redirect('/builder')
+    meal_repository.delete_meal(meal_id)
+    return redirect('/profile')
 
 # LIST FOR RECENT SEARCHES TO BE DISPLAYED IN INDEX
 
