@@ -106,7 +106,7 @@ def googleCallback():
         username = user['username']
         session['user'] = username
 
-    return redirect(url_for('profile'))
+    return redirect(url_for('index'))
 
 @app.get('/register')
 def register_page():
@@ -266,9 +266,8 @@ def delete_meal(meal_id):
     meal_repository.delete_meal(meal_id)
     return redirect('/profile')
 
-# LIST FOR RECENT SEARCHES TO BE DISPLAYED IN INDEX
 
-@app.get('/food/<id>')
+@app.get('/food/<id>') 
 def food(id):
     api_key = os.getenv('API_KEY')
     url = f'https://api.nal.usda.gov/fdc/v1/food/{id}?api_key={api_key}'
@@ -355,20 +354,20 @@ def foodsearch():
         data = res.json()
         foods = []
 
-        # Process each food result
+        #process each food result
         for food in data["foods"]:
             food_info = {"id": food["fdcId"], "description": food["description"]}
             
-            # Extract nutrient information
+            #extract nutrient information
             nutrients = {nutrient["nutrientId"]: nutrient["value"] 
                          for nutrient in food.get("foodNutrients", [])
                          if nutrient["nutrientId"] in nutrient_ids}
 
-            # Map extracted nutrients to their labels
+            #map extracted nutrients to their labels
             for nutrient_id, nutrient_name in nutrient_ids.items():
-                food_info[nutrient_name] = nutrients.get(nutrient_id, 0.0)  # Default to 0.0 if missing
+                food_info[nutrient_name] = nutrients.get(nutrient_id, 0.0) 
             
-            # Include optional fields like brand if present
+            #include optional fields like brand if present
             food_info["brand"] = food.get("brandOwner", "Unknown")
             foods.append(food_info)
         
@@ -391,7 +390,6 @@ def profile():
     if not user_id:
         return redirect(url_for('login_page'))
     
-    # loads default profile picture for the time being
     profile_picture = 'static/images/default-profile-pic.jpg'
     # meals = get_user_meals(user_id)
     # return meals=meals when repo is done
