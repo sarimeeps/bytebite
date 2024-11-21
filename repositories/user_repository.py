@@ -31,7 +31,7 @@ def create_user(email: str, username: str, password: str) -> dict[str, Any]:
             if user_id is None:
                 raise Exception('failed to create user')
             return {
-                'user_id': user_id,
+                'user_id': user_id[0],
                 'username': username
             }
         
