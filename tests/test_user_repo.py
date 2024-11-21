@@ -47,6 +47,20 @@ def test_create_user_failure(mock_db):
     with pytest.raises(Exception):
         create_user('example@example.com', 'exampleuser', 'password123')
 
+def test_create_oauth_user(mock_db):
+    mock_cursor, _ = mock_db
+    mock_cursor.fetchone.return_value = (123,)
+    email = 'example@example.com'
+    username = 'exampleuser'
+
+    create_oauth_user(username, email)
+
+    mock_cursor.execute.assert_called_once_with('''
+                        INSERT INTO users (email, username)
+                        VALUES (%s, %s)
+                        RETURNING user_id
+                        ''', [email, username])
+
 def test_get_user_by_email(mock_db):
     mock_cursor, _ = mock_db
     mock_cursor.fetchone.return_value = {'user_id': 123, 'username': 'exampleuser', 'password': 'password123'}
@@ -54,3 +68,39 @@ def test_get_user_by_email(mock_db):
     
     assert result['user_id'] == 123
     assert result
+
+def test_get_user_id_by_email(mock_db):
+    mock_cursor, _ = mock_db
+    mock_cursor.fetchone.return_value = {'user_id': 123}
+    result = get_user_id_by_email('example@example.com')
+    
+    assert result['user_id'] == 123
+    assert result
+
+def test_get_user_by_username(mock_db):
+    mock_cursor, _ = mock_db
+    mock_cursor.fetchone.return_value = {'user_id': 123, 'username': 'exampleuser', 'password': 'password123'}
+    result = get_user_by_username('exampleuser')
+    
+    assert result['user_id'] == 123
+    assert result
+
+def test_get_user_by_id(mock_db):
+    mock_cursor, _ = mock_db
+    mock_cursor.fetchone.return_value = {'user_id': 123, 'username': 'exampleuser'}
+    result = get_user_by_id(123)
+    
+    assert result['user_id'] == 123
+    assert result
+
+def test_get_all_users(mock_db):
+    mock_cursor, _ = mock_db
+    mock_cursor.fetchall.return_value = [
+        {'user_id': 123, 'username': 'exampleuser'},
+        {'user_id': 124, 'username': 'anotheruser'}
+    ]
+    result = get_all_users()
+    
+    assert len(result) == 2
+    assert result[0]['user_id'] == 123
+    assert result[1]['user_id'] == 124
