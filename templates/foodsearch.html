@@ -18,27 +18,26 @@
         </div>
 
         {% if foods %}
-            {% if foods.length != 0 %}
+            {% if foods|length != 0 %}
                 <table id="search-titles">
                     <tr>
                         <th>ID</th>
                         <th>Description</th>
-                        <th>Food Category</th>
                         <th>Brand</th>
                         <th>Action</th>
                     </tr>
                     {% for food in foods %}
                         <tr>
-                            <td><a href="{{ url_for('food', id=food.fdcId) }}">{{ food.fdcId }}</a></td>
+                            <td><a href="{{ url_for('food', id=food.id) }}">{{ food.id }}</a></td>
                             <td>{{ food.description }}</td>
-                            <td>{{ food.foodCategory }}</td>
-                            <td>{{ food.brandName }}</td>
+                            <td>{{ food.brand }}</td>
                             <td>
                                 <button class="add-to-calculator" 
                                     data-name="{{ food.description }}" 
-                                    data-calories="{{ food.foodNutrients.calories }}" 
-                                    data-carbs="{{ food.foodNutrients.carbohydrates }}" 
-                                    data-fat="{{ food.foodNutrients.fat }}">
+                                    data-calories="{{ food.calories }}" 
+                                    data-carbs="{{ food.carbs }}" 
+                                    data-protein="{{ food.protein }}" 
+                                    data-fats="{{ food.fats }}">
                                     Add to Calculator
                                 </button>
                             </td>
@@ -48,6 +47,8 @@
             {% else %}
                 <h1>There are no foods to display</h1>
             {% endif %}
+        {% else %}
+            <h1>No search results found.</h1>
         {% endif %}
     </div>
     
@@ -61,9 +62,10 @@
         button.addEventListener('click', function() {
             const foodData = {
                 name: this.getAttribute('data-name'),
-                calories: this.getAttribute('data-calories'),
-                carbs: this.getAttribute('data-carbs'),
-                fat: this.getAttribute('data-fat')
+                calories: parseFloat(this.getAttribute('data-calories')) || 0,
+                carbs: parseFloat(this.getAttribute('data-carbs')) || 0,
+                protein: parseFloat(this.getAttribute('data-protein')) || 0,
+                fats: parseFloat(this.getAttribute('data-fats')) || 0
             };
             let foods = JSON.parse(localStorage.getItem('calculatorFoods')) || [];
             foods.push(foodData);

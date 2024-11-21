@@ -7,7 +7,7 @@ def get_food(meal_id):
     with psycopg.connect(conninfo=get_database_url()) as conn:
         with conn.cursor() as cur:
             cur.execute(
-                'SELECT fdcId, description FROM food WHERE meal_id = %s',
+                'SELECT food_id, description FROM food WHERE meal_id = %s',
                 (meal_id,)
             )
             foods = cur.fetchall()
@@ -17,11 +17,21 @@ def get_meal(user_id):
     with psycopg.connect(conninfo=get_database_url()) as conn:
         with conn.cursor() as cur:
             cur.execute(
-                'SELECT meal_name FROM meal WHERE user_id = %s',
+                'SELECT meal_id, meal_name FROM meal WHERE user_id = %s',
                 (user_id,)
             )
-            return cur.fetchall()
-        
+            return [{"meal_id": row[0], "meal_name": row[1]} for row in cur.fetchall()]
+
+def get_meal_name(meal_id):
+    with psycopg.connect(conninfo=get_database_url()) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                'SELECT meal_name FROM meal WHERE meal_id = %s',
+                (meal_id,)
+            )
+            result = cur.fetchone()
+            return result[0] if result else None
+
 def create_meal(user_id, meal_name="New Meal"):
     with psycopg.connect(conninfo=get_database_url()) as conn:
         with conn.cursor() as cur:
@@ -62,10 +72,16 @@ def edit_meal(meal_id, name, ingredients):
             )
 
 def delete_meal(meal_id):
-# CHANGE
     with psycopg.connect(
         conninfo=get_database_url()
     ) as conn:
         with conn.cursor() as cur:
-            cur.execute('DELETE FROM meal WHERE id = %s', (meal_id,)
-                        )
+            cur.execute('DELETE FROM meal WHERE meal_id = %s', (meal_id,))
+
+def delete_food(meal_id, food_id):
+    with psycopg.connect(conninfo=get_database_url()) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                'DELETE FROM food WHERE meal_id = %s AND food_id = %s',
+                (meal_id, food_id))
+            conn.commit()

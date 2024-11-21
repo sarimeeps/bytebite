@@ -91,10 +91,7 @@ def googleCallback():
     
     session['email'] = email
 
-    print(token)
-
     user = user_repository.get_user_by_email(email)
-    print(user)
 
     if user is None:
         local_part = email.split('@')[0]
@@ -105,7 +102,8 @@ def googleCallback():
 
         session['user'] = username
 
-    if session['user'] != username:
+    if user:
+        username = user['username']
         session['user'] = username
 
     return redirect(url_for('profile'))
@@ -192,10 +190,11 @@ def add_to_meal():
 def create_meal():
     meal_items = session.get('meal_items', [])
     meal_id = session.get('meal_id')
-
-    if meal_id and meal_items:
-        for item in meal_items:
-            meal_repository.add_food_to_meal(meal_id, item['fdcId'], item['description'])
+    
+    if meal_id:
+        if meal_items:
+            for item in meal_items:
+                meal_repository.add_food_to_meal(meal_id, item['fdcId'], item['description'])
         # Clear the temporary food items after creating the meal
         session.pop('meal_items', None)
         session.pop('meal_id', None)
@@ -218,19 +217,37 @@ def builder():
     user_id = session.get('user_id')
     if not user_id:
         return redirect(url_for('login_page'))
+    
+    if request.method == 'POST' and not request.args.get('meal_id'):
+        session.pop('meal_id', None)
+        session.pop('meal_items', None)
 
+    meal_id = request.args.get('meal_id') or session.get('meal_id')
+    if meal_id:
+        session['meal_id'] = meal_id
     if request.method == 'POST':
         if 'meal_id' not in session:
             meal_id = meal_repository.create_meal(user_id)
             session['meal_id'] = meal_id
-    meal_id = session.get('meal_id')
+
+    meal_name = meal_repository.get_meal_name(meal_id)
     meal_items= meal_repository.get_food(meal_id)
     food = session.get('meal_items', [])
-    food_count= len(food)
+    food_count = len(food) + len(meal_items)
+    return render_template('builder.html', meal_name=meal_name, meal_items=meal_items, food_count=food_count)
 
-    return render_template('builder.html', meal_items=meal_items, food_count=food_count)
+@app.post('/meal/<int:meal_id>/food/<string:fdcId>/session-delete')
+def delete_food_from_session(meal_id, fdcId):
+    meal_items = session.get('meal_items', [])
+    updated_items = [item for item in meal_items if item['fdcId'] != fdcId]
+    session['meal_items'] = updated_items
+    
+    return redirect(url_for('builder', meal_id=meal_id))
 
-
+@app.post('/meal/<int:meal_id>/food/<int:food_id>/delete-db')
+def delete_food_from_db(meal_id, food_id):
+    meal_repository.delete_food(meal_id, food_id)
+    return redirect(url_for('builder', meal_id=meal_id))
 
 # Route for editing a existing meal
 @app.post('/meal/<int:meal_id>/edit')
@@ -238,7 +255,6 @@ def edit_meal(meal_id):
     # gets the form data from user
     name = request.form['name']
     ingredients = request.form['ingredients']
-    # CHANGE
     # edits the current meal in database
     edit_meal(meal_id, name, ingredients)
     return redirect('/builder')
@@ -246,10 +262,9 @@ def edit_meal(meal_id):
 # route for meal deletion
 @app.post('/meal/<int:meal_id>/delete')
 def delete_meal(meal_id):
-# CHANGE
     # deletes existing meal
-    delete_meal(meal_id)
-    return redirect('/builder')
+    meal_repository.delete_meal(meal_id)
+    return redirect('/profile')
 
 # LIST FOR RECENT SEARCHES TO BE DISPLAYED IN INDEX
 
@@ -322,20 +337,46 @@ def food(id):
 # FUNCTION FOR SEARCHING A FOOD ITEM
 @app.post('/foodsearch/')
 def foodsearch():
- 
     query = request.form.get("query")
-
     api_key = os.getenv('API_KEY')
     url = f'https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}&pageSize={10}'
-    print(query)
+
+    # Define the nutrient IDs of interest
+    nutrient_ids = {
+        1003: "protein",
+        1004: "fats",
+        1005: "carbs",
+        1008: "calories"
+    }
+
     try:
         res = requests.get(url)
         res.raise_for_status()
         data = res.json()
-        foods = data["foods"]
+        foods = []
+
+        # Process each food result
+        for food in data["foods"]:
+            food_info = {"id": food["fdcId"], "description": food["description"]}
+            
+            # Extract nutrient information
+            nutrients = {nutrient["nutrientId"]: nutrient["value"] 
+                         for nutrient in food.get("foodNutrients", [])
+                         if nutrient["nutrientId"] in nutrient_ids}
+
+            # Map extracted nutrients to their labels
+            for nutrient_id, nutrient_name in nutrient_ids.items():
+                food_info[nutrient_name] = nutrients.get(nutrient_id, 0.0)  # Default to 0.0 if missing
+            
+            # Include optional fields like brand if present
+            food_info["brand"] = food.get("brandOwner", "Unknown")
+            foods.append(food_info)
+        
         return render_template('foodsearch.html', foods=foods)
+
     except requests.exceptions.RequestException as e:
-        return jsonify(errMsg = str(e)), 500
+        return jsonify(errMsg=str(e)), 500
+
     
 @app.get('/foodsearch/')
 def searchpage():
